@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Study of Label Flipping Attack on Federated Learning Systems
 
 Code for the ESORICS 2020 paper: Data Poisoning Attacks Against Federated Learning Systems
@@ -90,3 +91,6 @@ archivePrefix = {arXiv},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
+=======
+# fl-security
+>>>>>>> 9ed1c03b58445a6ab148a3e5f69ac1f39e9a47be
