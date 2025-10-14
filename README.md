@@ -1,12 +1,71 @@
-<<<<<<< HEAD
 # Study of Label Flipping Attack on Federated Learning Systems
-
-Code for the ESORICS 2020 paper: Data Poisoning Attacks Against Federated Learning Systems
-
-[Study of Attacks on Federated Learning.pptx](https://github.com/michaelTJC96/Label_Flipping_Attack/files/7813203/Study.of.Attacks.on.Federated.Learning.pptx)
 
 ![image](https://user-images.githubusercontent.com/53596227/148281148-8f85bab3-d7a3-407f-8ce5-a7e8747e4ac3.png)
 
+# How to Run Instructions
+
+## Prerequisites
+- Python 3.8+
+- Node.js 20.19+ or 22.12+
+- Git
+
+## 1. Setup Environment
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+## 2. Install Dependencies
+```bash
+pip install --upgrade pip
+pip install -r requirements.pip
+```
+
+## 3. Setup Frontend
+```bash
+cd frontend
+npm install
+cd ..
+```
+
+## 4. Generate Initial Data and Models (One-time setup)
+```bash
+python generate_data_distribution.py
+python generate_default_models.py
+```
+
+## 5. Run Web Interface (Recommended)
+
+### Terminal 1 - Start Backend API Server:
+```bash
+python api_server.py
+```
+
+### Terminal 2 - Start Frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+### Access the application:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+
+## 6. Run Command Line Experiments (Alternative)
+```bash
+python label_flipping_attack.py
+python attack_timing.py
+python malicious_participant_availability.py
+python defense.py
+```
+
+## File Structure
+- `api_server.py` - Main FastAPI backend server
+- `server.py` - Core federated learning server functions
+- `frontend/` - React web interface
+- `results/` - Experiment results and CSV files
+- `logs/` - Experiment logs
+- `federated_learning/` - Core FL modules
 
 ## Installation
 
@@ -67,25 +126,4 @@ Recommended default hyperparameters for Fashion-MNIST (using the provided CNN):
 - Scheduler gamma: 0.1
 - Min_lr: 1e-10
 
-## Citing
 
-If you use this code, please cite the paper:
-
-```
-@ARTICLE{2020arXiv200708432T,
-       author = {{Tolpegin}, Vale and {Truex}, Stacey and {Emre Gursoy}, Mehmet and
-         {Liu}, Ling},
-        title = "{Data Poisoning Attacks Against Federated Learning Systems}",
-      journal = {arXiv e-prints},
-     keywords = {Computer Science - Machine Learning, Computer Science - Cryptography and Security, Statistics - Machine Learning},
-         year = 2020,
-        month = jul,
-          eid = {arXiv:2007.08432},
-        pages = {arXiv:2007.08432},
-archivePrefix = {arXiv},
-       eprint = {2007.08432},
- primaryClass = {cs.LG},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv200708432T},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-}
-```
