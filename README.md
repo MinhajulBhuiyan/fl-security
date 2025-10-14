@@ -3,8 +3,6 @@
 
 Code for the ESORICS 2020 paper: Data Poisoning Attacks Against Federated Learning Systems
 
-Final Year Report and Presentation Deck:
-[Final Year Project_Thung Jia Cheng_U1821805J.pdf](https://github.com/michaelTJC96/Label_Flipping_Attack/files/7813202/Final.Year.Project_Thung.Jia.Cheng_U1821805J.pdf) |
 [Study of Attacks on Federated Learning.pptx](https://github.com/michaelTJC96/Label_Flipping_Attack/files/7813203/Study.of.Attacks.on.Federated.Learning.pptx)
 
 ![image](https://user-images.githubusercontent.com/53596227/148281148-8f85bab3-d7a3-407f-8ce5-a7e8747e4ac3.png)
