@@ -1,0 +1,28 @@
+git clone https://github.com/MichaelTJC96/Label_Flipping_Attack.git
+cd Label_Flipping_Attack
+
+
+python -m venv .venv
+. .\.venv\Scripts\Activate.ps1
+
+
+pip install --upgrade pip
+
+pip install -r requirements.pip
+
+pip install matplotlib
+
+
+python generate_data_distribution.py
+python generate_default_models.py
+
+
+
+python label_flipping_attack.py
+
+python attack_timing.py
+
+python malicious_participant_availability.py
+
+python defense.py
+
