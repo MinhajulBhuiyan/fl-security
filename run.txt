@@ -1,28 +1,66 @@
-git clone https://github.com/MichaelTJC96/Label_Flipping_Attack.git
-cd Label_Flipping_Attack
+# Federated Learning Security Research Platform
+# How to Run Instructions
 
+## Prerequisites
+- Python 3.8+ 
+- Node.js 20.19+ or 22.12+
+- Git
 
+## 1. Setup Environment
+```bash
 python -m venv .venv
-. .\.venv\Scripts\Activate.ps1
+.venv\Scripts\activate
+```
 
-
+## 2. Install Dependencies  
+```bash
 pip install --upgrade pip
-
 pip install -r requirements.pip
+```
 
-pip install matplotlib
+## 3. Setup Frontend
+```bash
+cd frontend
+npm install
+cd ..
+```
 
-
+## 4. Generate Initial Data and Models (One-time setup)
+```bash
 python generate_data_distribution.py
 python generate_default_models.py
+```
 
+## 5. Run Web Interface (Recommended)
 
+### Terminal 1 - Start Backend API Server:
+```bash
+python api_server.py
+```
 
+### Terminal 2 - Start Frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+### Access the application:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+
+## 6. Run Command Line Experiments (Alternative)
+```bash
 python label_flipping_attack.py
-
-python attack_timing.py
-
+python attack_timing.py  
 python malicious_participant_availability.py
-
 python defense.py
+```
+
+## File Structure
+- `api_server.py` - Main FastAPI backend server
+- `server.py` - Core federated learning server functions
+- `frontend/` - React web interface
+- `results/` - Experiment results and CSV files
+- `logs/` - Experiment logs
+- `federated_learning/` - Core FL modules
 
