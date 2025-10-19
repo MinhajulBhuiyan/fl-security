@@ -76,6 +76,12 @@ function App() {
         <div className="header-content">
           <h1>Federated Learning Security Research</h1>
           <p>Label Flipping Attack Analysis & Defense Mechanisms</p>
+          <button 
+            className="top-right-button" 
+            onClick={() => window.location.href = '/about'}
+          >
+            About
+          </button>
         </div>
       </header>
 

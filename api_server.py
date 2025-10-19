@@ -211,11 +211,19 @@ SELECTION_STRATEGIES = {
 class ExperimentConfig(BaseModel):
     dataset: str = "fashion_mnist"  # Dataset selection: fashion_mnist or cifar10
     num_poisoned_workers: int = 0
-    replacement_method: str = "replace_1_with_9"
+    replacement_method: str = "default_no_change"
     selection_strategy: str = "RandomSelectionStrategy"
     workers_per_round: int = 5
     quick_mode: bool = True
     kwargs: Dict = {"NUM_WORKERS_PER_ROUND": 5}
+    
+    def __init__(self, **data):
+        super().__init__(**data)
+        # Sync workers_per_round with kwargs
+        if 'workers_per_round' in data:
+            self.kwargs["NUM_WORKERS_PER_ROUND"] = data['workers_per_round']
+        elif 'kwargs' in data and 'NUM_WORKERS_PER_ROUND' in data['kwargs']:
+            self.workers_per_round = data['kwargs']['NUM_WORKERS_PER_ROUND']
 
 class ExperimentResponse(BaseModel):
     exp_id: str

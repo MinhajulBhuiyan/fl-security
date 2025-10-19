@@ -48,6 +48,7 @@ body {
   border-bottom: 2px solid #3b82f6;
   padding: 1rem 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
 .header-content {
@@ -107,7 +108,7 @@ body {
 
 /* When results are showing - sidebar layout */
 .results-and-history.has-results {
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 1.5fr 250px; /* Increase results section width */
 }
 
 /* When no results - center the Recent Experiments */
@@ -493,4 +494,21 @@ body {
 
 .help-icon:hover {
   background: #2563eb;
+}
+
+.top-right-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.top-right-button:hover {
+  background-color: #2563eb;
 }

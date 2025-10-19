@@ -563,7 +563,7 @@ const ResultsView = ({ results, experimentId }) => {
                 </div>
                 <div className="config-item">
                   <span className="config-label">Training Epochs:</span>
-                  <span className="config-value">{epochs?.length || results.config?.epochs || 'N/A'}</span>
+                  <span className="config-value">{results.metadata?.total_epochs || epochs?.length || 'N/A'}</span>
                 </div>
                 <div className="config-item">
                   <span className="config-label">Dataset:</span>

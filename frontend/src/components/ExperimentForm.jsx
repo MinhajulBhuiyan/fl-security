@@ -12,10 +12,23 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
 
   // Handle form field changes
   const handleInputChange = (field, value) => {
-    setConfig(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setConfig(prev => {
+      const newConfig = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Sync workers_per_round with kwargs.NUM_WORKERS_PER_ROUND
+      if (field === 'workers_per_round') {
+        newConfig.kwargs = {
+          ...prev.kwargs,
+          NUM_WORKERS_PER_ROUND: value
+        };
+        setKwargsText(JSON.stringify(newConfig.kwargs, null, 2));
+      }
+      
+      return newConfig;
+    });
   };
 
   // Handle kwargs JSON input
