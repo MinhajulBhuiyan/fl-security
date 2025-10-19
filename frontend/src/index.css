@@ -2,7 +2,7 @@
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 16px; /* Base font size for better readability */
 
   color-scheme: light;
   color: #1f2937;
@@ -28,6 +28,11 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
+
+  --spacing-small: 0.5rem;
+  --spacing-medium: 1rem;
+  --spacing-large: 2rem;
+  --max-width: 1200px;
 }
 
 * {
@@ -41,7 +46,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-family: inherit;
-  background: #ffffff;
+  background-color: var(--gray-50);
+  color: var(--gray-800);
 }
 
 #root {
@@ -52,6 +58,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.25;
+  margin-bottom: var(--spacing-small);
 }
 
 h1 {
@@ -79,7 +86,7 @@ h6 {
 }
 
 p {
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-medium);
   color: var(--gray-600);
 }
 
@@ -100,11 +107,17 @@ input, select, textarea, button {
 }
 
 button {
-  cursor: pointer;
+  padding: var(--spacing-small) var(--spacing-medium);
+  background-color: var(--primary-color);
+  color: #fff;
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2563eb;
 }
 
 button:focus,

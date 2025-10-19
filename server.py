@@ -70,15 +70,16 @@ def run_machine_learning(clients, args, poisoned_workers):
         epoch_test_set_results.append(results)
         worker_selection.append(workers_selected)
 
-    return convert_results_to_csv(epoch_test_set_results), worker_selection
+    return convert_results_to_csv(epoch_test_set_results), worker_selection, clients[0]
 
-def run_exp(replacement_method, num_poisoned_workers, KWARGS, client_selection_strategy, idx):
+def run_exp(replacement_method, num_poisoned_workers, KWARGS, client_selection_strategy, idx, dataset="fashion_mnist"):
     log_files, results_files, models_folders, worker_selections_files = generate_experiment_ids(idx, 1)
 
     # Initialize logger
     handler = logger.add(log_files[0], enqueue=True)
 
     args = Arguments(logger)
+    args.set_dataset(dataset)
     args.set_model_save_path(models_folders[0])
     args.set_num_poisoned_workers(num_poisoned_workers)
     args.set_round_worker_selection_strategy_kwargs(KWARGS)
@@ -99,8 +100,16 @@ def run_exp(replacement_method, num_poisoned_workers, KWARGS, client_selection_s
 
     clients = create_clients(args, train_data_loaders, test_data_loader)
 
-    results, worker_selection = run_machine_learning(clients, args, poisoned_workers)
+    results, worker_selection, final_client = run_machine_learning(clients, args, poisoned_workers)
     save_results(results, results_files[0])
     save_results(worker_selection, worker_selections_files[0])
+    
+    # Save the final trained model
+    import torch
+    import os
+    final_model_path = f"results/{idx}_final_model.pth"
+    os.makedirs("results", exist_ok=True)
+    torch.save(final_client.get_nn_parameters(), final_model_path)
+    logger.info(f"Saved final model to {final_model_path}")
 
     logger.remove(handler)

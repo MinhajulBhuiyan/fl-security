@@ -70,6 +70,29 @@ export class ApiService {
     }
   }
 
+  static async classifyImage(experimentId, imageFile) {
+    try {
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      // Dataset is auto-detected by backend from model weights
+
+      const response = await fetch(`${API_BASE_URL}/classify/${experimentId}`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to classify image');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to classify image:', error);
+      throw error;
+    }
+  }
+
   // Mock functions for development - remove when backend is ready
   static async mockRunExperiment(config) {
     // Simulate API delay
@@ -118,14 +141,20 @@ export class ApiService {
 
 // Configuration for available options
 export const EXPERIMENT_CONFIG = {
+  datasets: [
+    { value: 'fashion_mnist', label: 'Fashion-MNIST', description: '28x28 grayscale - Clothing items' },
+    { value: 'cifar10', label: 'CIFAR-10', description: '32x32 RGB - Objects (airplane, car, bird, etc.)' }
+  ],
+  
   replacementMethods: [
+    { value: 'default_no_change', label: 'No Attack (Baseline)' },
     { value: 'replace_1_with_9', label: 'Replace 1 → 9' },
+    { value: 'replace_0_with_9', label: 'Replace 0 → 9' },
     { value: 'replace_0_with_2', label: 'Replace 0 → 2' },
     { value: 'replace_4_with_6', label: 'Replace 4 → 6' },
     { value: 'replace_5_with_3', label: 'Replace 5 → 3' },
     { value: 'replace_1_with_3', label: 'Replace 1 → 3' },
-    { value: 'replace_6_with_0', label: 'Replace 6 → 0' },
-    { value: 'default_no_change', label: 'No Attack (Baseline)' }
+    { value: 'replace_6_with_0', label: 'Replace 6 → 0' }
   ],
   
   selectionStrategies: [
@@ -136,11 +165,12 @@ export const EXPERIMENT_CONFIG = {
   ],
   
   defaultConfig: {
+    dataset: 'fashion_mnist',
     num_poisoned_workers: 0,
-    replacement_method: 'replace_1_with_9',
+    replacement_method: 'default_no_change',
     selection_strategy: 'RandomSelectionStrategy',
     workers_per_round: 5,
-    quick_mode: true,
+    quick_mode: false,
     kwargs: {
       NUM_WORKERS_PER_ROUND: 5
     }

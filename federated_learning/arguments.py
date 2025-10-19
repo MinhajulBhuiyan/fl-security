@@ -18,7 +18,7 @@ class Arguments:
 
         self.batch_size = 10
         self.test_batch_size = 1000
-        self.epochs = 10
+        self.epochs = 30  # Default: 30 epochs for good training
         self.lr = 0.01
         self.momentum = 0.5
         self.cuda = True
@@ -42,9 +42,9 @@ class Arguments:
         self.num_workers = 50
         self.num_poisoned_workers = 0
 
-        #self.net = Cifar10CNN
+        # Default to Fashion-MNIST (can be changed via set_dataset)
+        self.dataset = "fashion_mnist"
         self.net = FashionMNISTCNN
-
         self.train_data_loader_pickle_path = "data_loaders/fashion-mnist/train_data_loader.pickle"
         self.test_data_loader_pickle_path = "data_loaders/fashion-mnist/test_data_loader.pickle"
 
@@ -53,6 +53,22 @@ class Arguments:
         self.default_model_folder_path = "default_models"
 
         self.data_path = "data"
+    
+    def set_dataset(self, dataset_name):
+        """
+        Set the dataset to use for training (fashion_mnist or cifar10)
+        """
+        self.dataset = dataset_name
+        if dataset_name == "cifar10":
+            self.net = Cifar10CNN
+            self.train_data_loader_pickle_path = "data_loaders/cifar10/train_data_loader.pickle"
+            self.test_data_loader_pickle_path = "data_loaders/cifar10/test_data_loader.pickle"
+        else:  # fashion_mnist
+            self.net = FashionMNISTCNN
+            self.train_data_loader_pickle_path = "data_loaders/fashion-mnist/train_data_loader.pickle"
+            self.test_data_loader_pickle_path = "data_loaders/fashion-mnist/test_data_loader.pickle"
+        
+        self.logger.info(f"Dataset set to: {dataset_name}")
 
     def get_round_worker_selection_strategy(self):
         return self.round_worker_selection_strategy

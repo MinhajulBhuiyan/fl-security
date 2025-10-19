@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import Tooltip from './Tooltip';
+import { ApiService } from '../services/api';
 import './ResultsView.css';
 
 // Register Chart.js components
@@ -28,6 +29,10 @@ ChartJS.register(
 
 const ResultsView = ({ results, experimentId }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [classificationResult, setClassificationResult] = useState(null);
+  const [isClassifying, setIsClassifying] = useState(false);
+  const [classificationError, setClassificationError] = useState(null);
 
   // Prepare chart data using useMemo for better performance
   const chartData = useMemo(() => {
@@ -42,16 +47,16 @@ const ResultsView = ({ results, experimentId }) => {
           {
             label: 'Model Accuracy (%)',
             data: accuracy,
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            borderWidth: 3,
+            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(6, 182, 212, 0.08)',
+            borderWidth: 2.5,
             fill: true,
             tension: 0.4,
-            pointBackgroundColor: '#10b981',
+            pointBackgroundColor: '#06b6d4',
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2,
-            pointRadius: 5,
-            pointHoverRadius: 7,
+            pointRadius: 4,
+            pointHoverRadius: 6,
           }
         ]
       },
@@ -61,16 +66,16 @@ const ResultsView = ({ results, experimentId }) => {
           {
             label: 'Training Loss',
             data: loss,
-            borderColor: '#ef4444',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            borderWidth: 3,
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.08)',
+            borderWidth: 2.5,
             fill: true,
             tension: 0.4,
-            pointBackgroundColor: '#ef4444',
+            pointBackgroundColor: '#f59e0b',
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2,
-            pointRadius: 5,
-            pointHoverRadius: 7,
+            pointRadius: 4,
+            pointHoverRadius: 6,
           }
         ]
       },
@@ -80,20 +85,28 @@ const ResultsView = ({ results, experimentId }) => {
           {
             label: 'Accuracy (%)',
             data: accuracy,
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(6, 182, 212, 0.08)',
             borderWidth: 2,
             yAxisID: 'y',
             tension: 0.4,
+            pointBackgroundColor: '#06b6d4',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 1.5,
+            pointRadius: 3,
           },
           {
             label: 'Loss',
             data: loss.map(l => l * 20), // Scale loss for dual axis
-            borderColor: '#ef4444',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.08)',
             borderWidth: 2,
             yAxisID: 'y1',
             tension: 0.4,
+            pointBackgroundColor: '#f59e0b',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 1.5,
+            pointRadius: 3,
           }
         ]
       }
@@ -107,11 +120,19 @@ const ResultsView = ({ results, experimentId }) => {
     plugins: {
       legend: {
         position: 'top',
+        align: 'center',
         labels: {
           font: {
-            size: 12,
-            family: 'system-ui'
-          }
+            size: 13,
+            family: 'system-ui',
+            weight: '500'
+          },
+          color: '#475569',
+          padding: 16,
+          usePointStyle: true,
+          pointStyle: 'circle',
+          boxWidth: 8,
+          boxHeight: 8
         }
       },
       title: {
@@ -120,11 +141,31 @@ const ResultsView = ({ results, experimentId }) => {
       tooltip: {
         mode: 'index',
         intersect: false,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#ffffff',
-        bodyColor: '#ffffff',
-        borderColor: '#374151',
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+        titleColor: '#f1f5f9',
+        bodyColor: '#f1f5f9',
+        borderColor: '#64748b',
         borderWidth: 1,
+        padding: 12,
+        titleFont: {
+          size: 14,
+          weight: 'bold'
+        },
+        bodyFont: {
+          size: 13
+        },
+        displayColors: true,
+        boxPadding: 8,
+        callbacks: {
+          labelColor: function(context) {
+            return {
+              borderColor: context.dataset.borderColor,
+              backgroundColor: context.dataset.borderColor,
+              borderRadius: 4,
+              borderWidth: 0
+            }
+          }
+        }
       }
     },
     interaction: {
@@ -139,12 +180,22 @@ const ResultsView = ({ results, experimentId }) => {
           display: true,
           text: 'Epoch',
           font: {
-            size: 14,
+            size: 12,
             weight: 'bold'
-          }
+          },
+          color: '#475569',
+          padding: 10
         },
         grid: {
-          color: 'rgba(55, 65, 81, 0.3)'
+          color: 'rgba(226, 232, 240, 0.5)',
+          drawBorder: false,
+          lineWidth: 0.5
+        },
+        ticks: {
+          color: '#64748b',
+          font: {
+            size: 11
+          }
         }
       },
       y: {
@@ -153,18 +204,33 @@ const ResultsView = ({ results, experimentId }) => {
           display: true,
           text: 'Accuracy (%)',
           font: {
-            size: 14,
+            size: 12,
             weight: 'bold'
-          }
+          },
+          color: '#475569',
+          padding: 10
         },
         grid: {
-          color: 'rgba(55, 65, 81, 0.3)'
+          color: 'rgba(226, 232, 240, 0.5)',
+          drawBorder: false,
+          lineWidth: 0.5
+        },
+        ticks: {
+          color: '#64748b',
+          font: {
+            size: 11
+          }
         }
       }
     },
     elements: {
       point: {
-        hoverBorderWidth: 3
+        hoverBorderWidth: 3,
+        radius: 4,
+        hoverRadius: 6
+      },
+      line: {
+        tension: 0.4
       }
     }
   };
@@ -179,9 +245,11 @@ const ResultsView = ({ results, experimentId }) => {
           display: true,
           text: 'Loss',
           font: {
-            size: 14,
+            size: 12,
             weight: 'bold'
-          }
+          },
+          color: '#475569',
+          padding: 10
         }
       }
     }
@@ -246,6 +314,44 @@ const ResultsView = ({ results, experimentId }) => {
     window.URL.revokeObjectURL(url);
   };
 
+  // Image handling functions
+  const handleImageSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setClassificationResult(null);
+      setClassificationError(null);
+    }
+  };
+
+  const handleClassifyImage = async () => {
+    if (!selectedImage || !experimentId) return;
+
+    setIsClassifying(true);
+    setClassificationError(null);
+
+    try {
+      // Auto-detection: backend will determine the correct model architecture
+      const result = await ApiService.classifyImage(experimentId, selectedImage);
+
+      if (result.success) {
+        setClassificationResult(result.result);
+      } else {
+        setClassificationError(result.error);
+      }
+    } catch (error) {
+      setClassificationError(error.message);
+    } finally {
+      setIsClassifying(false);
+    }
+  };
+
+  const clearImage = () => {
+    setSelectedImage(null);
+    setClassificationResult(null);
+    setClassificationError(null);
+  };
+
   if (!results) {
     return (
       <div className="results-view">
@@ -297,6 +403,12 @@ const ResultsView = ({ results, experimentId }) => {
           onClick={() => setActiveTab('data')}
         >
           Data
+        </button>
+        <button 
+          className={`tab ${activeTab === 'image-test' ? 'active' : ''}`}
+          onClick={() => setActiveTab('image-test')}
+        >
+          Image Testing
         </button>
       </div>
 
@@ -380,22 +492,6 @@ const ResultsView = ({ results, experimentId }) => {
 
         {activeTab === 'workers' && (
           <div className="workers-tab">
-            <div className="workers-summary">
-              <h4>Worker Participation Summary</h4>
-              {results.poisoned_workers && results.poisoned_workers.length > 0 && (
-                <div className="poisoned-workers-info">
-                  <h5>Poisoned Workers (Attackers)</h5>
-                  <div className="poisoned-workers-list">
-                    {results.poisoned_workers.map(worker => (
-                      <span key={worker} className="worker-badge poisoned">
-                        Worker {worker}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
             <h4>Worker Selection Per Epoch</h4>
             {results.worker_selection ? (
               <div className="worker-selection-container">
@@ -466,8 +562,12 @@ const ResultsView = ({ results, experimentId }) => {
                   <span className="config-value">{results.config?.workers_per_round || 'N/A'}</span>
                 </div>
                 <div className="config-item">
-                  <span className="config-label">Quick Mode:</span>
-                  <span className="config-value">{results.config?.quick_mode ? 'Yes' : 'No'}</span>
+                  <span className="config-label">Training Epochs:</span>
+                  <span className="config-value">{epochs?.length || results.config?.epochs || 'N/A'}</span>
+                </div>
+                <div className="config-item">
+                  <span className="config-label">Dataset:</span>
+                  <span className="config-value">{results.config?.dataset || 'Fashion-MNIST'}</span>
                 </div>
                 <div className="config-item">
                   <span className="config-label">Duration:</span>
@@ -490,22 +590,141 @@ const ResultsView = ({ results, experimentId }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {epochs.map((epoch, i) => (
+                    {epochs && accuracy && loss && epochs.map((epoch, i) => (
                       <tr key={epoch}>
                         <td>{epoch}</td>
-                        <td>{accuracy[i].toFixed(2)}%</td>
-                        <td>{loss[i].toFixed(4)}</td>
-                        <td className={i > 0 ? (accuracy[i] > accuracy[i-1] ? 'positive' : 'negative') : ''}>
-                          {i > 0 ? `${(accuracy[i] - accuracy[i-1]) > 0 ? '+' : ''}${(accuracy[i] - accuracy[i-1]).toFixed(2)}%` : '-'}
+                        <td>{accuracy[i] != null ? accuracy[i].toFixed(2) : 'N/A'}%</td>
+                        <td>{loss[i] != null ? loss[i].toFixed(4) : 'N/A'}</td>
+                        <td className={i > 0 && accuracy[i] != null && accuracy[i-1] != null ? (accuracy[i] > accuracy[i-1] ? 'positive' : 'negative') : ''}>
+                          {i > 0 && accuracy[i] != null && accuracy[i-1] != null ? `${(accuracy[i] - accuracy[i-1]) > 0 ? '+' : ''}${(accuracy[i] - accuracy[i-1]).toFixed(2)}%` : '-'}
                         </td>
-                        <td className={i > 0 ? (loss[i] < loss[i-1] ? 'positive' : 'negative') : ''}>
-                          {i > 0 ? `${(loss[i] - loss[i-1]) > 0 ? '+' : ''}${(loss[i] - loss[i-1]).toFixed(4)}` : '-'}
+                        <td className={i > 0 && loss[i] != null && loss[i-1] != null ? (loss[i] < loss[i-1] ? 'positive' : 'negative') : ''}>
+                          {i > 0 && loss[i] != null && loss[i-1] != null ? `${(loss[i] - loss[i-1]) > 0 ? '+' : ''}${(loss[i] - loss[i-1]).toFixed(4)}` : '-'}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'image-test' && (
+          <div className="image-test-tab">
+            <div className="image-testing-container">
+              <h4>Test This Experiment's Trained Model
+                <Tooltip content="Upload images to see how THIS experiment's model classifies them. This demonstrates the real impact of attacks on model accuracy. Clean experiments (0 poisoned workers) will classify accurately, while poisoned experiments will show degraded performance.">
+                  <span className="help-icon">?</span>
+                </Tooltip>
+              </h4>
+              
+              {/* Experiment Info */}
+              <div className="model-info-section">
+                <div className="info-card">
+                  <h5>Using Model From:</h5>
+                  <p className="experiment-id-display">{experimentId}</p>
+                </div>
+                <div className="info-card">
+                  <h5>Attack Configuration:</h5>
+                  <p><strong>Poisoned Workers:</strong> {results.config?.num_poisoned_workers || 0}</p>
+                  <p><strong>Attack Method:</strong> {results.config?.replacement_method || 'N/A'}</p>
+                </div>
+                {results.config?.num_poisoned_workers === 0 && (
+                  <div className="clean-model-badge">
+                    ✓ Clean Model (No Attack)
+                  </div>
+                )}
+                {results.config?.num_poisoned_workers > 0 && (
+                  <div className="poisoned-model-badge">
+                    ⚠ Poisoned Model ({results.config.num_poisoned_workers} attackers)
+                  </div>
+                )}
+              </div>
+              
+              <div className="image-upload-section">
+                <div className="upload-area">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                    id="image-upload"
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="image-upload" className="upload-button">
+                    {selectedImage ? 'Change Image' : 'Select Image'}
+                  </label>
+                  
+                  {selectedImage && (
+                    <div className="selected-image-info">
+                      <p>Selected: {selectedImage.name}</p>
+                      <button onClick={clearImage} className="clear-button">
+                        Clear
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
+                <button 
+                  onClick={handleClassifyImage}
+                  disabled={!selectedImage || isClassifying}
+                  className="classify-button"
+                >
+                  {isClassifying ? 'Classifying with Experiment Model...' : 'Classify Image'}
+                </button>
+              </div>
+
+              {classificationError && (
+                <div className="classification-error">
+                  <h5>Error</h5>
+                  <p>{classificationError}</p>
+                </div>
+              )}
+
+              {classificationResult && (
+                <div className="classification-results">
+                  <h5>Classification Result</h5>
+                  
+                  <div className="result-summary">
+                    <div className="predicted-class">
+                      <span className="label">Predicted:</span>
+                      <span className="value">{classificationResult.class_names[classificationResult.predicted_class]}</span>
+                      <span className="confidence">({(classificationResult.confidence * 100).toFixed(1)}% confidence)</span>
+                    </div>
+                    
+                    <div className="dataset-info">
+                      <span className="label">Model Type:</span>
+                      <span className="value">{classificationResult.dataset_type === 'fashion_mnist' ? 'Fashion-MNIST (Digits/Clothing)' : 'CIFAR-10 (Objects)'}</span>
+                    </div>
+                  </div>
+
+                  <div className="confidence-bars">
+                    <h6>All Predictions:</h6>
+                    {classificationResult.all_probabilities.map((prob, idx) => (
+                      <div key={idx} className="confidence-bar">
+                        <span className="class-name">{classificationResult.class_names[idx]}</span>
+                        <div className="bar-container">
+                          <div 
+                            className={`bar ${idx === classificationResult.predicted_class ? 'predicted' : ''}`}
+                            style={{ width: `${prob * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="percentage">{(prob * 100).toFixed(1)}%</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {results.config?.num_poisoned_workers > 0 && (
+                    <div className="attack-notice">
+                      <div className="warning-icon">⚠️</div>
+                      <div className="warning-text">
+                        <strong>Attack Impact:</strong> This experiment used {results.config.num_poisoned_workers} poisoned workers 
+                        with "{results.config.replacement_method}" attack. The model's predictions may be incorrect due to poisoning.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

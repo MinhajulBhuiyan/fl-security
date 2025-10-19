@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ApiService, EXPERIMENT_CONFIG } from '../services/api';
-import Tooltip from './Tooltip';
 import './ExperimentForm.css';
 
 const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
@@ -54,6 +53,12 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
   // Start experiment
   const handleStartExperiment = async () => {
     if (!validateForm()) return;
+    
+    // Prevent multiple submissions
+    if (isRunning) {
+      setError('An experiment is already running. Please wait for it to complete.');
+      return;
+    }
 
     setIsRunning(true);
     setError(null);
@@ -122,24 +127,32 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
   return (
     <div className="experiment-form">
       <div className="form-header">
-        <h2>Experiment Configuration
-          <Tooltip content="Configure parameters for federated learning security experiments. Set up attack scenarios and worker selection strategies to test defense mechanisms against label flipping attacks.">
-            <span className="help-icon">?</span>
-          </Tooltip>
-        </h2>
+        <h2>Experiment Configuration</h2>
         <p>Configure federated learning parameters and attack settings</p>
       </div>
 
       <form onSubmit={(e) => { e.preventDefault(); handleStartExperiment(); }}>
         <div className="form-grid">
+          {/* Dataset Selection */}
+          <div className="form-group">
+            <label htmlFor="dataset">Dataset</label>
+            <select
+              id="dataset"
+              value={config.dataset}
+              onChange={(e) => handleInputChange('dataset', e.target.value)}
+              disabled={isRunning}
+            >
+              {EXPERIMENT_CONFIG.datasets.map(dataset => (
+                <option key={dataset.value} value={dataset.value}>
+                  {dataset.label} - {dataset.description}
+                </option>
+              ))}
+            </select>
+          </div>
+          
           {/* Number of Poisoned Workers */}
           <div className="form-group">
-            <label htmlFor="poisoned-workers">
-              Poisoned Clients
-              <Tooltip content="Number of malicious participants that will perform label flipping attacks during training. These clients will deliberately mislabel their data to degrade model performance.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
+            <label htmlFor="poisoned-workers">Poisoned Clients</label>
             <input
               id="poisoned-workers"
               type="number"
@@ -153,12 +166,7 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
 
           {/* Replacement Method */}
           <div className="form-group">
-            <label htmlFor="replacement-method">
-              Attack Method
-              <Tooltip content="Defines how malicious clients will flip labels. 'Random' assigns random incorrect labels, 'Class-specific' targets specific classes for maximum impact on model accuracy.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
+            <label htmlFor="replacement-method">Attack Method</label>
             <select
               id="replacement-method"
               value={config.replacement_method}
@@ -173,14 +181,18 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
             </select>
           </div>
 
+          {/* Selection Strategy - Moved to Advanced */}
+          
+          {/* Workers Per Round - Moved to Advanced */}
+        </div>
+
+        {/* Advanced Configuration */}
+        <details className="advanced-config">
+          <summary>Advanced Configuration</summary>
+          
           {/* Selection Strategy */}
           <div className="form-group">
-            <label htmlFor="selection-strategy">
-              Selection Strategy
-              <Tooltip content="Determines how clients are chosen for each training round. 'Random' selects clients randomly, while other strategies may use performance metrics or other criteria.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
+            <label htmlFor="selection-strategy">Worker Selection Strategy</label>
             <select
               id="selection-strategy"
               value={config.selection_strategy}
@@ -197,12 +209,7 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
 
           {/* Workers Per Round */}
           <div className="form-group">
-            <label htmlFor="workers-per-round">
-              Workers Per Round
-              <Tooltip content="Number of clients participating in each training round. Higher values increase training diversity but may include more poisoned workers.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
+            <label htmlFor="workers-per-round">Workers Per Round</label>
             <input
               id="workers-per-round"
               type="number"
@@ -213,35 +220,8 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
               disabled={isRunning}
             />
           </div>
-
-          {/* Quick Demo Mode */}
-          <div className="form-group checkbox-group">
-            <label htmlFor="quick-mode" className="checkbox-label">
-              <input
-                id="quick-mode"
-                type="checkbox"
-                checked={config.quick_mode}
-                onChange={(e) => handleInputChange('quick_mode', e.target.checked)}
-                disabled={isRunning}
-              />
-              Quick Mode
-              <Tooltip content="Run a shorter experiment for testing purposes. Uses fewer training epochs and a smaller dataset subset for faster results.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
-          </div>
-        </div>
-
-        {/* Advanced Configuration */}
-        <details className="advanced-config">
-          <summary>Advanced Configuration</summary>
           <div className="form-group">
-            <label htmlFor="kwargs">
-              Strategy Parameters (JSON)
-              <Tooltip content="Additional parameters for selection strategies in JSON format. These control fine-grained behavior like minimum learning rates, breakpoint conditions, or probability thresholds.">
-                <span className="tooltip">?</span>
-              </Tooltip>
-            </label>
+            <label htmlFor="kwargs">Strategy Parameters (JSON)</label>
             <textarea
               id="kwargs"
               value={kwargsText}
@@ -258,11 +238,7 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
           <div className="status-section">
             <div className="status-card">
               <div className="status-header">
-                <h4>Experiment Status
-                  <Tooltip content="Shows the current state of your experiment: Submitted (queued for processing), Running (actively training), Complete (finished successfully with results), or Failed (error occurred during execution).">
-                    <span className="help-icon">?</span>
-                  </Tooltip>
-                </h4>
+                <h4>Experiment Status</h4>
                 {currentExperiment && (
                   <span className="experiment-id">{currentExperiment}</span>
                 )}
@@ -304,9 +280,14 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
               </button>
             </>
           ) : (
-            <button type="button" onClick={handleCancel} className="btn btn-danger">
-              Cancel
-            </button>
+            <>
+              <button type="submit" className="btn btn-primary" disabled>
+                Experiment Running...
+              </button>
+              <button type="button" onClick={handleCancel} className="btn btn-danger">
+                Cancel
+              </button>
+            </>
           )}
         </div>
       </form>
