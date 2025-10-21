@@ -570,8 +570,16 @@ const ResultsView = ({ results, experimentId }) => {
                   <span className="config-value">{results.config?.dataset || 'Fashion-MNIST'}</span>
                 </div>
                 <div className="config-item">
-                  <span className="config-label">Duration:</span>
-                  <span className="config-value">{results.duration || 'N/A'}</span>
+                  <span className="config-label">Defense Enabled:</span>
+                  <span className="config-value">{results.config?.enable_defense ? '✓ Yes' : '✗ No'}</span>
+                </div>
+                <div className="config-item">
+                  <span className="config-label">Defense Method:</span>
+                  <span className="config-value">
+                    {results.config?.enable_defense 
+                      ? (results.config?.defense_method || 'byzantine_robust').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                      : 'None'}
+                  </span>
                 </div>
               </div>
             </div>

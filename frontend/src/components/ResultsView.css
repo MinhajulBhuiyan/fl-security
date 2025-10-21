@@ -510,7 +510,7 @@
 
 .config-value {
   font-weight: 700;
-  color: #0f172a;
+  color: #000000 !important;
   font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   background: rgba(14, 165, 233, 0.08);
   padding: 0.35rem 0.5rem;

@@ -79,19 +79,25 @@ function About() {
             </p>
             <div className="key-points">
               <div className="key-point">
-                <span className="point-icon">🎯</span>
+                <svg className="point-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
                 <div>
                   <strong>Purpose:</strong> Research how malicious participants can corrupt federated models and develop defenses to prevent it
                 </div>
               </div>
               <div className="key-point">
-                <span className="point-icon">🔬</span>
+                <svg className="point-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
                 <div>
                   <strong>Method:</strong> Run controlled experiments with configurable attacks and defenses on real datasets (CIFAR-10, Fashion-MNIST)
                 </div>
               </div>
               <div className="key-point">
-                <span className="point-icon">📊</span>
+                <svg className="point-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
                 <div>
                   <strong>Output:</strong> Visualize attack impact, defense effectiveness, and model accuracy across training rounds
                 </div>
@@ -145,7 +151,10 @@ function About() {
               </div>
             </div>
             <div className="benefit-badge">
-              ✓ Data stays private • Collaborative learning • Scalable
+              <svg className="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              Data stays private • Collaborative learning • Scalable
             </div>
           </div>
         </motion.section>
@@ -159,27 +168,158 @@ function About() {
             <h2>Label Flipping Attacks</h2>
           </div>
           <div className="content-card">
-            <p><strong>Malicious clients</strong> intentionally corrupt training labels to poison the global model.</p>
+            <p className="section-intro">
+              In label flipping attacks, malicious participants intentionally mislabel their training data to poison the global model. 
+              This causes the model to learn incorrect patterns, leading to targeted misclassifications. The severity depends on which 
+              classes are swapped and how many poisoned workers participate.
+            </p>
             
-            <div className="attack-examples">
-              <div className="attack-card severe">
-                <div className="attack-badge">High Impact</div>
-                <h4>Replace 1 → 9</h4>
-                <p>All class 1 images labeled as class 9</p>
-                <p className="impact">Impact: 85% → 60% accuracy</p>
-              </div>
-              <div className="attack-card moderate">
-                <div className="attack-badge">Medium Impact</div>
-                <h4>Replace 0 → 2</h4>
-                <p>Similar classes confused</p>
-                <p className="impact">Impact: 85% → 72% accuracy</p>
-              </div>
+            <div className="attack-grid">
               <div className="attack-card baseline">
-                <div className="attack-badge">Baseline</div>
-                <h4>No Attack</h4>
-                <p>Clean training</p>
-                <p className="impact">Accuracy: ~85-92%</p>
+                <div className="attack-header">
+                  <h4>No Attack</h4>
+                  <span className="severity-badge baseline">Baseline</span>
+                </div>
+                <p className="attack-description">
+                  Clean training with all labels correctly assigned. This establishes the performance benchmark.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> CIFAR-10 airplane images correctly labeled as class 0, car images as class 1.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Expected Accuracy:</span>
+                  <span className="impact-value">85-92%</span>
+                </div>
               </div>
+
+              <div className="attack-card severe">
+                <div className="attack-header">
+                  <h4>Replace 0 → 9</h4>
+                  <span className="severity-badge severe">High Impact</span>
+                </div>
+                <p className="attack-description">
+                  All instances of class 0 are mislabeled as class 9, creating confusion between dissimilar categories.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Airplanes (0) systematically labeled as trucks (9). Model learns to associate airplane features with truck labels.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 60-70%</span>
+                </div>
+              </div>
+
+              <div className="attack-card critical">
+                <div className="attack-header">
+                  <h4>Replace 1 → 9</h4>
+                  <span className="severity-badge critical">Critical</span>
+                </div>
+                <p className="attack-description">
+                  Class 1 systematically mislabeled as class 9, causing severe confusion in vehicle classification.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Cars (1) labeled as trucks (9). Creates backdoor where car images are consistently misclassified.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 55-65%</span>
+                </div>
+              </div>
+
+              <div className="attack-card moderate">
+                <div className="attack-header">
+                  <h4>Replace 0 → 2</h4>
+                  <span className="severity-badge moderate">Moderate</span>
+                </div>
+                <p className="attack-description">
+                  Visually similar classes swapped, exploiting feature similarity for subtle poisoning.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Airplanes (0) labeled as birds (2). Both have wings and fly, making confusion more plausible.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 70-80%</span>
+                </div>
+              </div>
+
+              <div className="attack-card moderate">
+                <div className="attack-header">
+                  <h4>Replace 4 → 6</h4>
+                  <span className="severity-badge moderate">Moderate</span>
+                </div>
+                <p className="attack-description">
+                  Mid-range classes swapped to test model's ability to distinguish subtle features.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Deer (4) labeled as frogs (6). Tests if model can differentiate animal types despite size differences.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 72-82%</span>
+                </div>
+              </div>
+
+              <div className="attack-card severe">
+                <div className="attack-header">
+                  <h4>Replace 5 → 3</h4>
+                  <span className="severity-badge severe">High Impact</span>
+                </div>
+                <p className="attack-description">
+                  Common pet categories confused, disrupting learned patterns for similar animals.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Dogs (5) labeled as cats (3). Both are four-legged pets with similar features, causing high confusion.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 58-68%</span>
+                </div>
+              </div>
+
+              <div className="attack-card moderate">
+                <div className="attack-header">
+                  <h4>Replace 1 → 3</h4>
+                  <span className="severity-badge moderate">Moderate</span>
+                </div>
+                <p className="attack-description">
+                  Cross-category confusion between vehicles and animals to create unexpected misclassifications.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Cars (1) labeled as cats (3). Tests model robustness against nonsensical label assignments.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 68-78%</span>
+                </div>
+              </div>
+
+              <div className="attack-card severe">
+                <div className="attack-header">
+                  <h4>Replace 6 → 0</h4>
+                  <span className="severity-badge severe">High Impact</span>
+                </div>
+                <p className="attack-description">
+                  Reverse mapping to test inverse poisoning effects and model resilience.
+                </p>
+                <div className="attack-example">
+                  <strong>Example:</strong> Frogs (6) labeled as airplanes (0). Completely unrelated classes to maximize model confusion.
+                </div>
+                <div className="attack-impact">
+                  <span className="impact-label">Accuracy Drop:</span>
+                  <span className="impact-value">85% → 60-70%</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="attack-summary">
+              <h4>Key Insights</h4>
+              <ul>
+                <li><strong>Dissimilar classes</strong> (e.g., 0→9, 6→0) cause more severe damage than similar classes (e.g., 0→2)</li>
+                <li><strong>Visual similarity</strong> makes attacks harder to detect but slightly less impactful</li>
+                <li><strong>Multiple poisoners</strong> amplify the attack effect exponentially</li>
+                <li><strong>Targeted backdoors</strong> can be created for specific misclassification pairs</li>
+              </ul>
             </div>
           </div>
         </motion.section>
@@ -193,25 +333,165 @@ function About() {
             <h2>Worker Selection Strategies</h2>
           </div>
           <div className="content-card">
-            <p><strong>Controls which clients</strong> participate in each training round.</p>
+            <p className="section-intro">
+              Worker selection strategies determine which subset of clients participates in each training round. 
+              Different strategies affect convergence speed, fairness, and vulnerability to attacks. The server 
+              selects a fixed number of workers per round from the total pool of available clients.
+            </p>
             
-            <div className="selection-grid">
-              <div className="selection-card">
-                <h4>Random Selection</h4>
-                <p>Uniform sampling each round</p>
+            <div className="strategy-detailed-grid">
+              <div className="strategy-detail-card">
+                <div className="strategy-header">
+                  <h4>Random Selection</h4>
+                  <span className="strategy-type">Baseline Strategy</span>
+                </div>
+                <p className="strategy-description">
+                  Each training round randomly samples workers with uniform probability. Every client has an equal 
+                  chance of being selected regardless of previous participation.
+                </p>
+                <div className="strategy-mechanics">
+                  <strong>How it works:</strong>
+                  <p>From a pool of 100 clients, randomly select 10 different clients each round using uniform distribution.</p>
+                </div>
+                <div className="strategy-example">
+                  <strong>Example:</strong> Round 1: clients [5, 23, 67, 12, 89, 34, 76, 91, 45, 8]. Round 2: clients [34, 56, 2, 78, 91, 45, 13, 67, 88, 29].
+                </div>
+                <div className="strategy-implications">
+                  <strong>Implications:</strong>
+                  <ul>
+                    <li>Fair distribution ensures all clients contribute over time</li>
+                    <li>Baseline for measuring other strategies</li>
+                    <li>Poisoners have proportional chance of being selected</li>
+                    <li>May take longer to converge due to data distribution variance</li>
+                  </ul>
+                </div>
               </div>
-              <div className="selection-card">
-                <h4>Before Breakpoint</h4>
-                <p>Favor early-round clients</p>
+
+              <div className="strategy-detail-card">
+                <div className="strategy-header">
+                  <h4>Before Breakpoint</h4>
+                  <span className="strategy-type">Early-Phase Focused</span>
+                </div>
+                <p className="strategy-description">
+                  Prioritizes a stable subset of clients during initial training epochs to accelerate early convergence. 
+                  After a breakpoint epoch, gradually shifts to broader client selection.
+                </p>
+                <div className="strategy-mechanics">
+                  <strong>How it works:</strong>
+                  <p>Define breakpoint at epoch 5. Epochs 1-5: select 80% from clients 0-40. Epochs 6+: uniform random selection from all clients.</p>
+                </div>
+                <div className="strategy-example">
+                  <strong>Example:</strong> Epoch 3: 8 clients from [0-40], 2 from [41-100]. Epoch 7: all 10 clients from uniform [0-100].
+                </div>
+                <div className="strategy-implications">
+                  <strong>Implications:</strong>
+                  <ul>
+                    <li>Faster initial convergence with consistent early participants</li>
+                    <li>Risk: if early pool contains poisoners, attack impact is amplified</li>
+                    <li>Model may overfit to early clients' data distribution</li>
+                    <li>Useful when early clients have higher quality data</li>
+                  </ul>
+                </div>
               </div>
-              <div className="selection-card">
-                <h4>After Breakpoint</h4>
-                <p>Shift to later clients</p>
+
+              <div className="strategy-detail-card">
+                <div className="strategy-header">
+                  <h4>After Breakpoint</h4>
+                  <span className="strategy-type">Late-Phase Shift</span>
+                </div>
+                <p className="strategy-description">
+                  Initially uses random selection, then shifts selection bias toward later-indexed clients after 
+                  a specified breakpoint to introduce fresh data and reduce overfitting.
+                </p>
+                <div className="strategy-mechanics">
+                  <strong>How it works:</strong>
+                  <p>Breakpoint at epoch 10. Epochs 1-10: uniform random. Epochs 11+: prefer clients 50-100 with 70% probability, 30% from 0-49.</p>
+                </div>
+                <div className="strategy-example">
+                  <strong>Example:</strong> Epoch 8: clients uniformly from [0-100]. Epoch 15: 7 clients from [50-100], 3 from [0-49].
+                </div>
+                <div className="strategy-implications">
+                  <strong>Implications:</strong>
+                  <ul>
+                    <li>Introduces diversity in later training stages</li>
+                    <li>Can correct for early overfitting patterns</li>
+                    <li>Tests model robustness to distribution shift</li>
+                    <li>May destabilize if late clients have poor data quality</li>
+                  </ul>
+                </div>
               </div>
-              <div className="selection-card">
-                <h4>Poisoner Probability</h4>
-                <p>Bias toward/against attackers</p>
+
+              <div className="strategy-detail-card">
+                <div className="strategy-header">
+                  <h4>Poisoner Probability</h4>
+                  <span className="strategy-type">Attack-Aware</span>
+                </div>
+                <p className="strategy-description">
+                  Adjusts selection probabilities based on suspected maliciousness. Can be configured to either 
+                  oversample poisoners (stress-test attacks) or undersample them (defense simulation).
+                </p>
+                <div className="strategy-mechanics">
+                  <strong>How it works:</strong>
+                  <p>Identify 5 suspected poisoners. Attack mode: select poisoners with 80% probability. Defense mode: select poisoners with 10% probability.</p>
+                </div>
+                <div className="strategy-example">
+                  <strong>Example:</strong> Attack mode - 8 of 10 workers are poisoners each round. Defense mode - only 1 of 10 workers is a poisoner.
+                </div>
+                <div className="strategy-implications">
+                  <strong>Implications:</strong>
+                  <ul>
+                    <li>Stress-test: measures maximum attack impact with frequent poisoner participation</li>
+                    <li>Defense mode: simulates client filtering defense effectiveness</li>
+                    <li>Enables controlled experiments on attack severity vs. poisoner frequency</li>
+                    <li>Requires prior knowledge or detection mechanism to identify poisoners</li>
+                  </ul>
+                </div>
               </div>
+            </div>
+
+            <div className="strategy-comparison">
+              <h4>Strategy Comparison</h4>
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Strategy</th>
+                    <th>Convergence Speed</th>
+                    <th>Fairness</th>
+                    <th>Attack Resilience</th>
+                    <th>Use Case</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Random Selection</strong></td>
+                    <td>Moderate</td>
+                    <td>High</td>
+                    <td>Moderate</td>
+                    <td>Baseline experiments</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Before Breakpoint</strong></td>
+                    <td>Fast (early)</td>
+                    <td>Low (early bias)</td>
+                    <td>Low if early poisoners</td>
+                    <td>Quick initial training</td>
+                  </tr>
+                  <tr>
+                    <td><strong>After Breakpoint</strong></td>
+                    <td>Variable</td>
+                    <td>Moderate</td>
+                    <td>Can improve late-stage</td>
+                    <td>Distribution shift testing</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Poisoner Probability</strong></td>
+                    <td>Depends on mode</td>
+                    <td>Low (intentional bias)</td>
+                    <td>High (defense) / Low (attack)</td>
+                    <td>Attack impact analysis</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </motion.section>
@@ -222,22 +502,128 @@ function About() {
             <svg className="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
             </svg>
-            <h2>Datasets & Models</h2>
+            <h2>Datasets & Neural Network Models</h2>
           </div>
           <div className="content-card">
-            <div className="dataset-grid">
-              <div className="dataset-card">
-                <div className="dataset-icon">🖼️</div>
-                <h4>CIFAR-10</h4>
-                <p>60K color images (32×32)</p>
-                <p>10 classes: airplane, car, bird, cat, etc.</p>
+            <p className="section-intro">
+              We use two standard image classification datasets to evaluate federated learning security. 
+              Each dataset is paired with a convolutional neural network optimized for its specific characteristics.
+            </p>
+            
+            <div className="dataset-detailed-grid">
+              <div className="dataset-detail-card">
+                <div className="dataset-header">
+                  <h4>CIFAR-10 Dataset</h4>
+                  <span className="dataset-badge">Color Images</span>
+                </div>
+                <div className="dataset-specs">
+                  <div className="spec-item">
+                    <span className="spec-label">Total Images:</span>
+                    <span className="spec-value">60,000 (50K train + 10K test)</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Resolution:</span>
+                    <span className="spec-value">32×32 pixels RGB</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Classes:</span>
+                    <span className="spec-value">10 categories</span>
+                  </div>
+                </div>
+                <div className="class-list">
+                  <strong>Class Categories:</strong>
+                  <ul>
+                    <li><strong>0:</strong> Airplane</li>
+                    <li><strong>1:</strong> Automobile</li>
+                    <li><strong>2:</strong> Bird</li>
+                    <li><strong>3:</strong> Cat</li>
+                    <li><strong>4:</strong> Deer</li>
+                    <li><strong>5:</strong> Dog</li>
+                    <li><strong>6:</strong> Frog</li>
+                    <li><strong>7:</strong> Horse</li>
+                    <li><strong>8:</strong> Ship</li>
+                    <li><strong>9:</strong> Truck</li>
+                  </ul>
+                </div>
+                <div className="model-architecture">
+                  <strong>CIFAR-10 CNN Architecture:</strong>
+                  <ul>
+                    <li><strong>Input Layer:</strong> 32×32×3 (RGB channels)</li>
+                    <li><strong>Conv Block 1:</strong> 32 filters (3×3), ReLU, BatchNorm, MaxPool (2×2)</li>
+                    <li><strong>Conv Block 2:</strong> 64 filters (3×3), ReLU, BatchNorm, MaxPool (2×2)</li>
+                    <li><strong>Conv Block 3:</strong> 128 filters (3×3), ReLU, BatchNorm, MaxPool (2×2)</li>
+                    <li><strong>Flatten:</strong> Convert to 1D vector</li>
+                    <li><strong>Dense Layer:</strong> 256 units, ReLU, Dropout (0.5)</li>
+                    <li><strong>Output Layer:</strong> 10 units, Softmax activation</li>
+                  </ul>
+                </div>
+                <div className="model-performance">
+                  <strong>Expected Performance:</strong>
+                  <p>Clean model: 85-92% test accuracy. Under attack: 55-80% depending on attack severity.</p>
+                </div>
               </div>
-              <div className="dataset-card">
-                <div className="dataset-icon">👕</div>
-                <h4>Fashion-MNIST</h4>
-                <p>70K grayscale images (28×28)</p>
-                <p>10 classes: shirt, dress, shoes, etc.</p>
+
+              <div className="dataset-detail-card">
+                <div className="dataset-header">
+                  <h4>Fashion-MNIST Dataset</h4>
+                  <span className="dataset-badge">Grayscale Images</span>
+                </div>
+                <div className="dataset-specs">
+                  <div className="spec-item">
+                    <span className="spec-label">Total Images:</span>
+                    <span className="spec-value">70,000 (60K train + 10K test)</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Resolution:</span>
+                    <span className="spec-value">28×28 pixels grayscale</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Classes:</span>
+                    <span className="spec-value">10 fashion categories</span>
+                  </div>
+                </div>
+                <div className="class-list">
+                  <strong>Class Categories:</strong>
+                  <ul>
+                    <li><strong>0:</strong> T-shirt/Top</li>
+                    <li><strong>1:</strong> Trouser</li>
+                    <li><strong>2:</strong> Pullover</li>
+                    <li><strong>3:</strong> Dress</li>
+                    <li><strong>4:</strong> Coat</li>
+                    <li><strong>5:</strong> Sandal</li>
+                    <li><strong>6:</strong> Shirt</li>
+                    <li><strong>7:</strong> Sneaker</li>
+                    <li><strong>8:</strong> Bag</li>
+                    <li><strong>9:</strong> Ankle Boot</li>
+                  </ul>
+                </div>
+                <div className="model-architecture">
+                  <strong>Fashion-MNIST CNN Architecture:</strong>
+                  <ul>
+                    <li><strong>Input Layer:</strong> 28×28×1 (single grayscale channel)</li>
+                    <li><strong>Conv Block 1:</strong> 32 filters (3×3), ReLU, BatchNorm, MaxPool (2×2)</li>
+                    <li><strong>Conv Block 2:</strong> 64 filters (3×3), ReLU, BatchNorm, MaxPool (2×2)</li>
+                    <li><strong>Flatten:</strong> Convert to 1D vector</li>
+                    <li><strong>Dense Layer:</strong> 128 units, ReLU, Dropout (0.4)</li>
+                    <li><strong>Output Layer:</strong> 10 units, Softmax activation</li>
+                  </ul>
+                </div>
+                <div className="model-performance">
+                  <strong>Expected Performance:</strong>
+                  <p>Clean model: 88-93% test accuracy. Under attack: 60-85% depending on attack severity.</p>
+                </div>
               </div>
+            </div>
+
+            <div className="dataset-rationale">
+              <h4>Why These Datasets?</h4>
+              <ul>
+                <li><strong>Standard Benchmarks:</strong> Widely used in federated learning research for reproducibility</li>
+                <li><strong>Balanced Classes:</strong> Each class has equal representation (6,000 samples in CIFAR-10, 7,000 in Fashion-MNIST)</li>
+                <li><strong>Attack Visibility:</strong> Label flipping attacks show clear, measurable impact on accuracy</li>
+                <li><strong>Computational Efficiency:</strong> Small image sizes enable rapid experimentation</li>
+                <li><strong>Real-World Relevance:</strong> Object recognition (CIFAR-10) and fashion classification (Fashion-MNIST) mirror practical applications</li>
+              </ul>
             </div>
           </div>
         </motion.section>
@@ -251,52 +637,246 @@ function About() {
             <h2>Defense Mechanisms</h2>
           </div>
           <div className="content-card">
-            <p><strong>Protect the model</strong> by filtering or adjusting malicious updates before aggregation.</p>
+            <p className="section-intro">
+              Our framework implements four defense strategies to protect federated learning from malicious updates. 
+              Each defense uses different techniques to detect and mitigate poisoned gradients.
+            </p>
             
-            <div className="defense-grid">
-              <div className="defense-card">
-                <div className="defense-icon">🛡️</div>
-                <h4>Byzantine-Robust</h4>
-                <p>Use median instead of mean to ignore outliers</p>
-                <div className="defense-metric">70-90% mitigation</div>
+            <div className="defense-detailed-grid">
+              <div className="defense-detail-card">
+                <div className="defense-header">
+                  <h4>Byzantine-Robust Aggregation</h4>
+                  <span className="defense-type">Statistical</span>
+                </div>
+                <div className="defense-description">
+                  Uses coordinate-wise median instead of mean to aggregate client updates, making the system resilient 
+                  to Byzantine failures where malicious clients send arbitrary values.
+                </div>
+                <div className="defense-mechanics">
+                  <strong>How It Works:</strong>
+                  <p>
+                    Instead of averaging gradients (mean aggregation), compute the median value for each parameter 
+                    independently. Outlier gradients from poisoned clients are automatically filtered out since median 
+                    is robust to extreme values.
+                  </p>
+                  <div className="algorithm-steps">
+                    <strong>Algorithm:</strong>
+                    <ol>
+                      <li>Collect gradient updates from all selected clients</li>
+                      <li>For each model parameter position, sort all client values</li>
+                      <li>Select median value (middle element after sorting)</li>
+                      <li>Apply median gradient to global model</li>
+                    </ol>
+                  </div>
+                </div>
+                <div className="defense-example">
+                  <strong>Example Scenario:</strong>
+                  <p>
+                    Parameter update values: [0.02, 0.03, <strong>0.91</strong>, 0.025, 0.028] (poisoned value in bold)
+                  </p>
+                  <p>
+                    <strong>Without defense:</strong> Mean = 0.2026 (corrupted by outlier)<br/>
+                    <strong>With Byzantine-Robust:</strong> Median = 0.028 (outlier ignored)
+                  </p>
+                </div>
+                <div className="defense-effectiveness">
+                  <strong>Mitigation Effectiveness:</strong> 70-90% attack mitigation
+                </div>
+                <div className="defense-implementation">
+                  <strong>Implementation:</strong> <code>federated_learning/utils/aggregation.py</code>
+                </div>
               </div>
-              <div className="defense-card">
-                <div className="defense-icon">🔍</div>
-                <h4>Anomaly Detection</h4>
-                <p>Flag clients with abnormal gradient patterns</p>
-                <div className="defense-metric">60-80% mitigation</div>
+
+              <div className="defense-detail-card">
+                <div className="defense-header">
+                  <h4>Anomaly Detection</h4>
+                  <span className="defense-type">Statistical</span>
+                </div>
+                <div className="defense-description">
+                  Analyzes gradient distributions to identify statistically anomalous updates that deviate significantly 
+                  from the expected pattern, flagging potentially malicious clients.
+                </div>
+                <div className="defense-mechanics">
+                  <strong>How It Works:</strong>
+                  <p>
+                    Compute statistical measures (mean, standard deviation, Z-scores) across all client gradients. 
+                    Updates with Z-scores exceeding a threshold (typically 2-3 standard deviations) are considered 
+                    anomalous and excluded from aggregation.
+                  </p>
+                  <div className="algorithm-steps">
+                    <strong>Algorithm:</strong>
+                    <ol>
+                      <li>Calculate mean gradient vector across all clients</li>
+                      <li>Compute standard deviation for each parameter</li>
+                      <li>Calculate Z-score for each client's gradient</li>
+                      <li>Flag clients with Z-score &gt; threshold (e.g., 2.5σ)</li>
+                      <li>Aggregate only non-anomalous updates</li>
+                    </ol>
+                  </div>
+                </div>
+                <div className="defense-example">
+                  <strong>Example Scenario:</strong>
+                  <p>
+                    10 clients submit updates. Client 3's gradient has Z-score = 3.8 (exceeds threshold 2.5).
+                  </p>
+                  <p>
+                    <strong>Action:</strong> Client 3's update is flagged as anomalous and excluded. 
+                    Aggregate remaining 9 clients using standard mean.
+                  </p>
+                </div>
+                <div className="defense-effectiveness">
+                  <strong>Mitigation Effectiveness:</strong> 60-85% attack mitigation
+                </div>
+                <div className="defense-implementation">
+                  <strong>Implementation:</strong> <code>federated_learning/utils/anomaly_detection.py</code>
+                </div>
               </div>
-              <div className="defense-card">
-                <div className="defense-icon">✂️</div>
-                <h4>Gradient Clipping</h4>
-                <p>Limit update magnitude to reduce attack impact</p>
-                <div className="defense-metric">40-60% mitigation</div>
+
+              <div className="defense-detail-card">
+                <div className="defense-header">
+                  <h4>Gradient Clipping</h4>
+                  <span className="defense-type">Norm-Based</span>
+                </div>
+                <div className="defense-description">
+                  Limits the L2 norm of gradient updates to a maximum threshold, preventing malicious clients from 
+                  injecting extremely large gradients that could destabilize model training.
+                </div>
+                <div className="defense-mechanics">
+                  <strong>How It Works:</strong>
+                  <p>
+                    Calculate the L2 norm (magnitude) of each client's gradient vector. If the norm exceeds a predefined 
+                    threshold, scale the gradient down proportionally to meet the limit while preserving direction.
+                  </p>
+                  <div className="algorithm-steps">
+                    <strong>Algorithm:</strong>
+                    <ol>
+                      <li>Compute L2 norm: ||gradient|| = √(Σ g²)</li>
+                      <li>If ||gradient|| &gt; threshold:</li>
+                      <li>&nbsp;&nbsp;&nbsp;&nbsp;gradient = gradient × (threshold / ||gradient||)</li>
+                      <li>Otherwise, keep gradient unchanged</li>
+                      <li>Aggregate clipped gradients using mean</li>
+                    </ol>
+                  </div>
+                </div>
+                <div className="defense-example">
+                  <strong>Example Scenario:</strong>
+                  <p>
+                    Gradient vector: [5.2, 8.7, -3.4, 12.1], L2 norm = 15.3, Threshold = 5.0
+                  </p>
+                  <p>
+                    <strong>Action:</strong> Scale factor = 5.0 / 15.3 = 0.327<br/>
+                    <strong>Clipped gradient:</strong> [1.70, 2.84, -1.11, 3.96] (norm = 5.0)
+                  </p>
+                </div>
+                <div className="defense-effectiveness">
+                  <strong>Mitigation Effectiveness:</strong> 50-75% attack mitigation
+                </div>
+                <div className="defense-implementation">
+                  <strong>Implementation:</strong> <code>federated_learning/utils/gradient_clipping.py</code>
+                </div>
               </div>
-              <div className="defense-card">
-                <div className="defense-icon">🚫</div>
-                <h4>Client Filtering</h4>
-                <p>Blacklist suspicious clients over time</p>
-                <div className="defense-metric">50-70% mitigation</div>
+
+              <div className="defense-detail-card">
+                <div className="defense-header">
+                  <h4>Client Filtering</h4>
+                  <span className="defense-type">Reputation-Based</span>
+                </div>
+                <div className="defense-description">
+                  Maintains reputation scores for each client based on historical update quality. Clients with low 
+                  reputation (consistently suspicious updates) are excluded from future training rounds.
+                </div>
+                <div className="defense-mechanics">
+                  <strong>How It Works:</strong>
+                  <p>
+                    Track each client's contribution quality over time using metrics like gradient similarity to 
+                    consensus, validation accuracy impact, and consistency. Assign reputation scores (0-1) and 
+                    exclude clients below threshold.
+                  </p>
+                  <div className="algorithm-steps">
+                    <strong>Algorithm:</strong>
+                    <ol>
+                      <li>Initialize all clients with reputation = 1.0</li>
+                      <li>After each round, evaluate update quality (cosine similarity to consensus)</li>
+                      <li>Update reputation: R_new = 0.9 × R_old + 0.1 × quality_score</li>
+                      <li>Filter: Only select clients with reputation &gt; 0.5</li>
+                      <li>Aggregate updates from high-reputation clients only</li>
+                    </ol>
+                  </div>
+                </div>
+                <div className="defense-example">
+                  <strong>Example Scenario:</strong>
+                  <p>
+                    Round 5: Client 7 submits suspicious update (low similarity to consensus).
+                  </p>
+                  <p>
+                    <strong>Reputation decay:</strong> R = 0.9 × 0.85 + 0.1 × 0.2 = 0.785<br/>
+                    <strong>Round 6-8:</strong> Continued suspicious behavior drops R to 0.45<br/>
+                    <strong>Round 9+:</strong> Client 7 excluded (R &lt; 0.5 threshold)
+                  </p>
+                </div>
+                <div className="defense-effectiveness">
+                  <strong>Mitigation Effectiveness:</strong> 65-80% attack mitigation (improves over time)
+                </div>
+                <div className="defense-implementation">
+                  <strong>Implementation:</strong> <code>federated_learning/utils/client_filtering.py</code>
+                </div>
               </div>
             </div>
 
-            <div className="comparison-box">
-              <div className="comparison-side no-defense">
-                <h5>❌ Without Defense</h5>
-                <ul>
-                  <li>Accuracy drops to 60-65%</li>
-                  <li>Model permanently damaged</li>
-                  <li>Targeted misclassification</li>
-                </ul>
-              </div>
-              <div className="comparison-side with-defense">
-                <h5>✅ With Defense</h5>
-                <ul>
-                  <li>Accuracy stays 80-86%</li>
-                  <li>Attack mitigated</li>
-                  <li>Model remains robust</li>
-                </ul>
-              </div>
+            <div className="defense-comparison">
+              <h4>Defense Mechanism Comparison</h4>
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Defense</th>
+                    <th>Detection Method</th>
+                    <th>Computational Cost</th>
+                    <th>Attack Types</th>
+                    <th>Best Use Case</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Byzantine-Robust</strong></td>
+                    <td>Median aggregation</td>
+                    <td>Low (sorting only)</td>
+                    <td>Extreme outliers</td>
+                    <td>High poisoning rates</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Anomaly Detection</strong></td>
+                    <td>Z-score analysis</td>
+                    <td>Medium (statistics)</td>
+                    <td>Statistical deviations</td>
+                    <td>Moderate attacks</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gradient Clipping</strong></td>
+                    <td>L2 norm limiting</td>
+                    <td>Low (norm calculation)</td>
+                    <td>Large gradients</td>
+                    <td>Gradient explosion</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Client Filtering</strong></td>
+                    <td>Reputation tracking</td>
+                    <td>Medium (history tracking)</td>
+                    <td>Persistent attackers</td>
+                    <td>Long-term defense</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="defense-tradeoffs">
+              <h4>Key Considerations</h4>
+              <ul>
+                <li><strong>No Single Solution:</strong> Each defense has strengths and weaknesses; combining multiple defenses often yields best results</li>
+                <li><strong>Attack Adaptation:</strong> Sophisticated attackers may adapt to known defenses; defense diversity is critical</li>
+                <li><strong>Honest Client Impact:</strong> Some defenses (e.g., gradient clipping) may slightly reduce convergence speed for honest clients</li>
+                <li><strong>Computational Overhead:</strong> Defense mechanisms add processing time; balance security needs with efficiency</li>
+                <li><strong>Threshold Tuning:</strong> Defense effectiveness depends on proper threshold calibration for your specific use case</li>
+              </ul>
             </div>
           </div>
         </motion.section>
