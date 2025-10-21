@@ -230,11 +230,18 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
                 onChange={(e) => handleInputChange('defense_method', e.target.value)}
                 disabled={isRunning}
               >
-                <option value="byzantine_robust">Byzantine-Robust Aggregation</option>
-                <option value="anomaly_detection">Anomaly Detection</option>
-                <option value="gradient_clipping">Gradient Clipping</option>
-                <option value="client_filtering">Client Filtering</option>
+                <option value="byzantine_robust">Byzantine-Robust (70-90% mitigation)</option>
+                <option value="anomaly_detection">Anomaly Detection (60-80% mitigation)</option>
+                <option value="gradient_clipping">Gradient Clipping (40-60% mitigation)</option>
+                <option value="client_filtering">Client Filtering (50-70% mitigation)</option>
               </select>
+              <small className="field-help">
+                {config.defense_method === 'byzantine_robust' && '🛡️ Uses median instead of mean to filter outliers'}
+                {config.defense_method === 'anomaly_detection' && '🔍 Flags clients with abnormal gradient patterns'}
+                {config.defense_method === 'gradient_clipping' && '✂️ Limits update magnitude to reduce impact'}
+                {config.defense_method === 'client_filtering' && '🚫 Blacklists suspicious clients over time'}
+                {!config.defense_method && '🛡️ Choose a defense mechanism'}
+              </small>
             </div>
           )}
 

@@ -5,7 +5,7 @@
   --primary-dark: #1e293b;
   --accent-green: #10b981;
   --accent-red: #ef4444;
-  --accent-yellow: #f59e0b;
+  --accent-orange: #f97316;
   --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
@@ -326,7 +326,7 @@
 }
 
 .strategy-card.moderate .strategy-badge {
-  background: var(--accent-yellow);
+  background: var(--accent-orange);
   color: white;
 }
 
@@ -435,7 +435,7 @@
   background: var(--gray-50);
   padding: 1.25rem;
   border-radius: 8px;
-  border-left: 4px solid var(--accent-yellow);
+  border-left: 4px solid var(--accent-orange);
   margin-top: 2rem;
   display: flex;
   align-items: center;
@@ -467,6 +467,386 @@
   background: white;
   border-left-width: 4px;
   padding-left: 1.4rem;
+}
+
+/* New Concise Sections */
+.key-points {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.key-point {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.point-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.lead-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.fl-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.fl-step {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--gray-50);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.fl-step:hover {
+  background: #e0f2fe;
+  transform: translateX(4px);
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--primary-blue);
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.benefit-badge {
+  background: #dcfce7;
+  border-left: 4px solid var(--accent-green);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: #166534;
+  font-weight: 500;
+  margin-top: 1.5rem;
+}
+
+.attack-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.attack-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.attack-card.severe {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  border: 2px solid #dc2626;
+}
+
+.attack-card.moderate {
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  border: 2px solid var(--accent-orange);
+}
+
+.attack-card.baseline {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 2px solid var(--primary-blue);
+}
+
+.attack-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.attack-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.attack-card.severe .attack-badge {
+  background: #dc2626;
+  color: white;
+}
+
+.attack-card.moderate .attack-badge {
+  background: var(--accent-orange);
+  color: white;
+}
+
+.attack-card.baseline .attack-badge {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.attack-card h4 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--gray-800);
+}
+
+.attack-card p {
+  margin: 0.5rem 0;
+  color: var(--gray-600);
+  font-size: 0.95rem;
+}
+
+.impact {
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-top: 0.75rem !important;
+  font-size: 1rem !important;
+}
+
+.selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.selection-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.selection-card:hover {
+  border-color: var(--primary-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.selection-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary-blue);
+  font-size: 1.1rem;
+}
+
+.selection-card p {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 0.95rem;
+}
+
+.dataset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.dataset-card {
+  padding: 2rem;
+  background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+  border: 2px solid #facc15;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.dataset-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(250, 204, 21, 0.3);
+}
+
+.dataset-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.dataset-card h4 {
+  margin: 0.5rem 0 1rem 0;
+  color: var(--gray-800);
+  font-size: 1.3rem;
+}
+
+.dataset-card p {
+  margin: 0.5rem 0;
+  color: var(--gray-700);
+  font-size: 0.95rem;
+}
+
+.defense-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.defense-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid var(--accent-green);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.defense-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25);
+}
+
+.defense-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.defense-card h4 {
+  margin: 0.5rem 0;
+  color: #065f46;
+  font-size: 1.15rem;
+}
+
+.defense-card p {
+  margin: 0.75rem 0;
+  color: #047857;
+  font-size: 0.9rem;
+}
+
+.defense-metric {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: var(--accent-green);
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.comparison-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-radius: 12px;
+}
+
+.comparison-side {
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.comparison-side.no-defense {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  border: 2px solid #dc2626;
+}
+
+.comparison-side.with-defense {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  border: 2px solid var(--accent-green);
+}
+
+.comparison-side h5 {
+  margin: 0 0 1rem 0;
+  font-size: 1.15rem;
+}
+
+.comparison-side.no-defense h5 {
+  color: #991b1b;
+}
+
+.comparison-side.with-defense h5 {
+  color: #065f46;
+}
+
+.comparison-side ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comparison-side ul li {
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.comparison-side.no-defense ul li {
+  color: #7f1d1d;
+}
+
+.comparison-side.with-defense ul li {
+  color: #064e3b;
+}
+
+.usage-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.usage-step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+  border-left: 4px solid #facc15;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.usage-step:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);
+}
+
+.usage-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #facc15;
+  color: #713f12;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.usage-step strong {
+  display: block;
+  color: #713f12;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.usage-step p {
+  margin: 0;
+  color: #854d0e;
+  font-size: 0.95rem;
 }
 
 /* Call to Action */
@@ -609,5 +989,167 @@
 
   .cta-card {
     padding: 2rem 1.5rem;
+  }
+}
+
+/* Defense Mechanisms - New Styles */
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.comparison-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid;
+}
+
+.comparison-card.no-defense {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.1));
+  border-color: var(--accent-red);
+}
+
+.comparison-card.with-defense {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.1));
+  border-color: var(--accent-green);
+}
+
+.comparison-card h5 {
+  font-size: 1.3rem;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+}
+
+.comparison-card.no-defense h5 {
+  color: var(--accent-red);
+}
+
+.comparison-card.with-defense h5 {
+  color: var(--accent-green);
+}
+
+.comparison-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comparison-card ul li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.comparison-card ul li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.comparison-card.no-defense ul li:before {
+  color: var(--accent-red);
+}
+
+.comparison-card.with-defense ul li:before {
+  color: var(--accent-green);
+}
+
+.defense-strategies {
+  margin-top: 2rem;
+}
+
+.strategy-card.defense-method {
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(59, 130, 246, 0.08));
+}
+
+.strategy-card.defense-method .strategy-badge {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.defense-comparison-table {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.defense-comparison-table h4 {
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.defense-comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.defense-comparison-table th,
+.defense-comparison-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.defense-comparison-table th {
+  background: var(--primary-dark);
+  color: white;
+  font-weight: 600;
+}
+
+.defense-comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.defense-comparison-table tr:hover {
+  background: var(--gray-50);
+}
+
+.scenario-box {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.1));
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-blue);
+  margin-top: 1rem;
+}
+
+.scenario-box p {
+  margin: 0.75rem 0;
+}
+
+.scenario-box strong {
+  color: var(--primary-dark);
+}
+
+.scenario-box ul {
+  margin: 0.5rem 0;
+  padding-left: 2rem;
+}
+
+.scenario-box ul li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .defense-comparison-table {
+    font-size: 0.9rem;
+  }
+
+  .defense-comparison-table th,
+  .defense-comparison-table td {
+    padding: 0.75rem 0.5rem;
   }
 }

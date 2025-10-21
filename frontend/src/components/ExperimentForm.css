@@ -98,9 +98,24 @@
   background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
   padding: 0.875rem;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  transition: all 0.2s ease;
+}
+
+.form-group:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.field-help {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-left: 3px solid #3b82f6;
+  border-radius: 4px;
+  color: #1e40af;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: block;
 }
 
 /* Defense Toggle Styling */
@@ -339,7 +354,7 @@
 }
 
 .status-running .status-indicator {
-  background: #fbbf24;
+  background: #f97316;
 }
 
 .status-done {
@@ -372,7 +387,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  background: linear-gradient(90deg, #f97316, #ea580c);
   animation: progress 2s infinite;
 }
 
