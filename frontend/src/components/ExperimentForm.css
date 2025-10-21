@@ -103,6 +103,43 @@
   position: relative;
 }
 
+/* Defense Toggle Styling */
+.form-group.defense-toggle {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(75, 192, 192, 0.08) 0%, rgba(75, 192, 192, 0.12) 100%);
+  border: 2px solid rgba(75, 192, 192, 0.3);
+  min-height: auto;
+}
+
+.form-group.defense-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2d9c9c;
+  margin: 0;
+}
+
+.form-group.defense-toggle input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #4bc0c0;
+}
+
+.defense-info {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(75, 192, 192, 0.2);
+  color: #2d9c9c;
+}
+
 .form-group::before {
   content: '';
   position: absolute;

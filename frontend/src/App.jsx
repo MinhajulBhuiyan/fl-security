@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ExperimentForm from './components/ExperimentForm'
 import ResultsView from './components/ResultsView'
+import DefenseView from './components/DefenseView'
 import Tooltip from './components/Tooltip'
 import { ApiService } from './services/api'
 import './App.css'
@@ -9,6 +10,9 @@ function App() {
   const [currentExperiment, setCurrentExperiment] = useState(null)
   const [results, setResults] = useState(null)
   const [experiments, setExperiments] = useState([])
+  const [baselineResults, setBaselineResults] = useState(null)
+  const [defenseResults, setDefenseResults] = useState(null)
+  const [showDefenseComparison, setShowDefenseComparison] = useState(false)
 
   // Load existing experiments on component mount
   useEffect(() => {
@@ -45,6 +49,21 @@ function App() {
 
   const handleResultsReady = (experimentResults) => {
     setResults(experimentResults)
+    
+    // Check if this is a defense experiment and store accordingly
+    if (experimentResults.config?.enable_defense) {
+      setDefenseResults(experimentResults)
+      setShowDefenseComparison(true)
+    } else if (!experimentResults.config?.enable_defense && defenseResults) {
+      // This is baseline, we already have defense results
+      setBaselineResults(experimentResults)
+      setShowDefenseComparison(true)
+    } else {
+      // Just a regular experiment
+      setBaselineResults(null)
+      setDefenseResults(null)
+      setShowDefenseComparison(false)
+    }
     
     // Update experiment status in history
     setExperiments(prev => 
@@ -105,6 +124,15 @@ function App() {
                     results={results} 
                     experimentId={currentExperiment}
                   />
+                  
+                  {/* Defense Comparison View */}
+                  {showDefenseComparison && baselineResults && defenseResults && (
+                    <DefenseView 
+                      baselineResults={baselineResults}
+                      defenseResults={defenseResults}
+                      config={defenseResults.config}
+                    />
+                  )}
                 </section>
               )}
 

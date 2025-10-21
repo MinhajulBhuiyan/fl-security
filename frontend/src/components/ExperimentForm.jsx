@@ -203,6 +203,41 @@ const ExperimentForm = ({ onExperimentStart, onResultsReady }) => {
         <details className="advanced-config">
           <summary>Advanced Configuration</summary>
           
+          {/* Defense Mechanism Toggle */}
+          <div className="form-group defense-toggle">
+            <label htmlFor="enable-defense">
+              <input
+                id="enable-defense"
+                type="checkbox"
+                checked={config.enable_defense || false}
+                onChange={(e) => handleInputChange('enable_defense', e.target.checked)}
+                disabled={isRunning}
+              />
+              Enable Defense Mechanism
+            </label>
+            <span className="defense-info">
+              {config.enable_defense ? '✓ Defense Active' : 'No Defense'}
+            </span>
+          </div>
+
+          {/* Defense Method Selection */}
+          {config.enable_defense && (
+            <div className="form-group">
+              <label htmlFor="defense-method">Defense Method</label>
+              <select
+                id="defense-method"
+                value={config.defense_method || 'byzantine_robust'}
+                onChange={(e) => handleInputChange('defense_method', e.target.value)}
+                disabled={isRunning}
+              >
+                <option value="byzantine_robust">Byzantine-Robust Aggregation</option>
+                <option value="anomaly_detection">Anomaly Detection</option>
+                <option value="gradient_clipping">Gradient Clipping</option>
+                <option value="client_filtering">Client Filtering</option>
+              </select>
+            </div>
+          )}
+
           {/* Selection Strategy */}
           <div className="form-group">
             <label htmlFor="selection-strategy">Worker Selection Strategy</label>
