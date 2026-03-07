@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAWOS Story Point Estimation — Federated Learning Feasibility Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    #21262d;
+      --text:      #c9d1d9;
+      --muted:     #6e7681;
+      --heading:   #f0f6fc;
+      --accent:    #e6a817;
+      --accent2:   #58a6ff;
+      --green:     #3fb950;
+      --red:       #f85149;
+      --orange:    #d29922;
+      --card:      #1c2128;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: linear-gradient(160deg, #0d1117 0%, #161b22 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230,168,23,0.12), transparent);
+      pointer-events: none;
+    }
+    .header-label {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(230,168,23,0.35);
+      padding: 0.25rem 0.85rem;
+      border-radius: 2px;
+      margin-bottom: 1.4rem;
+      animation: fadeDown 0.7s ease both;
+    }
+    .site-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      max-width: 760px;
+      margin: 0 auto 1rem;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+    .site-header p.subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      font-style: italic;
+      font-weight: 300;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.6rem;
+      background: rgba(63,185,80,0.12);
+      border: 1px solid rgba(63,185,80,0.4);
+      color: var(--green);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      padding: 0.4rem 1.1rem;
+      border-radius: 2px;
+      animation: fadeDown 0.7s 0.3s ease both;
+    }
+    .verdict-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── Navigation ── */
+    .toc-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: fadeDown 0.5s 0.4s ease both;
+    }
+    .toc-nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1.5rem;
+      justify-content: center;
+    }
+    .toc-nav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.2rem 0;
+    }
+    .toc-nav a:hover { color: var(--accent); }
+
+    /* ── Main content ── */
+    main {
+      padding: 3.5rem 0 5rem;
+    }
+
+    /* ── Sections ── */
+    .section {
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-number {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .section > h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--heading);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Option Cards ── */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 640px) { .options-grid { grid-template-columns: 1fr; } }
+
+    .option-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.4rem 1.5rem;
+      position: relative;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .option-card:hover {
+      border-color: rgba(230,168,23,0.3);
+      transform: translateY(-2px);
+    }
+    .option-card.recommended {
+      border-color: rgba(63,185,80,0.45);
+      background: linear-gradient(135deg, #1c2128 0%, #1a2420 100%);
+    }
+    .option-card.recommended::before {
+      content: 'RECOMMENDED';
+      position: absolute;
+      top: 0; right: 0;
+      background: var(--green);
+      color: #0d1117;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      padding: 0.22rem 0.6rem;
+      border-radius: 0 4px 0 3px;
+    }
+    .option-card h3 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.65rem;
+    }
+    .option-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--heading);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .option-card p {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ── Feature list ── */
+    .feature-list {
+      list-style: none;
+      font-size: 0.875rem;
+      line-height: 1.7;
+    }
+    .feature-list li {
+      padding: 0.2rem 0 0.2rem 1.2rem;
+      position: relative;
+      color: var(--text);
+    }
+    .feature-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .feature-list li strong {
+      color: var(--heading);
+      font-weight: 600;
+    }
+
+    /* ── Pro/Con lists ── */
+    .pro-con {
+      list-style: none;
+      font-size: 0.875rem;
+      line-height: 1.65;
+    }
+    .pro-con li { padding: 0.18rem 0 0.18rem 1.4rem; position: relative; }
+    .pro-con li.pro { color: var(--green); }
+    .pro-con li.pro::before { content: '+'; position: absolute; left: 0; font-family: 'IBM Plex Mono', monospace; }
+    .pro-con li.con { color: var(--red); }
+    .pro-con li.con::before { content: '-'; position: absolute; left: 0; font-family: 'IBM Plex Mono', monospace; }
+
+    /* ── Recommendation bar ── */
+    .rec-bar {
+      background: linear-gradient(90deg, rgba(230,168,23,0.1), rgba(230,168,23,0.04));
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.4rem;
+      border-radius: 0 4px 4px 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Code / Architecture blocks ── */
+    .arch-block {
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .arch-block .arch-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .arch-block pre {
+      padding: 1.4rem 1.5rem;
+      overflow-x: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: #8b949e;
+      white-space: pre;
+    }
+    .arch-block pre .hl { color: var(--accent2); }
+    .arch-block pre .ok { color: var(--green); }
+    .arch-block pre .new { color: var(--accent); }
+    .arch-block pre .mod { color: var(--orange); }
+
+    /* ── MLP diagram ── */
+    .mlp-diagram {
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .mlp-layers {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .mlp-layer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .mlp-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.5rem 0.9rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text);
+      white-space: nowrap;
+      transition: border-color 0.25s;
+    }
+    .mlp-box:hover { border-color: var(--accent2); }
+    .mlp-box.input { border-color: rgba(88,166,255,0.5); color: var(--accent2); }
+    .mlp-box.hidden1 { border-color: rgba(230,168,23,0.5); color: var(--accent); }
+    .mlp-box.hidden2 { border-color: rgba(230,168,23,0.35); color: #c8981e; }
+    .mlp-box.output { border-color: rgba(63,185,80,0.5); color: var(--green); }
+    .mlp-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .mlp-arrow {
+      font-size: 1.1rem;
+      color: var(--muted);
+      padding-bottom: 1.2rem;
+    }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+    thead th {
+      background: var(--surface);
+      color: var(--heading);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--border);
+      text-align: left;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    tbody td {
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      vertical-align: top;
+    }
+    .badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+    .badge-low { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.35); }
+    .badge-med { background: rgba(210,153,34,0.15); color: var(--orange); border: 1px solid rgba(210,153,34,0.35); }
+    .badge-new { background: rgba(88,166,255,0.12); color: var(--accent2); border: 1px solid rgba(88,166,255,0.3); }
+    .badge-reuse { background: rgba(63,185,80,0.1); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.45rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .timeline-item h4 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .timeline-item p, .timeline-item ul {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .timeline-item ul { list-style: none; }
+    .timeline-item ul li { padding-left: 1.1rem; position: relative; }
+    .timeline-item ul li::before { content: '·'; position: absolute; left: 0; color: var(--muted); }
+
+    /* ── Data flow pipeline ── */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(33,38,45,0.5);
+      transition: background 0.2s;
+    }
+    .pipeline-step:last-child { border-bottom: none; }
+    .pipeline-step:hover { background: rgba(255,255,255,0.02); }
+    .ps-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .ps-icon {
+      font-size: 1rem;
+      width: 1.5rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .ps-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+    .ps-text strong { color: var(--heading); }
+    .ps-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* ── Summary callout ── */
+    .final-verdict {
+      background: linear-gradient(135deg, #161b22, #1a2015);
+      border: 1px solid rgba(63,185,80,0.35);
+      border-radius: 4px;
+      padding: 2rem 2.5rem;
+      margin-top: 2rem;
+    }
+    .final-verdict h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    @media (max-width: 500px) { .verdict-grid { grid-template-columns: 1fr; } }
+    .verdict-item {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      font-size: 0.875rem;
+    }
+    .verdict-item .vi-icon { color: var(--green); font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; }
+    .verdict-item .vi-text { color: var(--text); line-height: 1.55; }
+
+    /* ── Complexity comparison ── */
+    .compare-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 2fr 1fr;
+      gap: 0;
+      font-size: 0.85rem;
+    }
+    .compare-row > div {
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-header > div {
+      background: var(--surface);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-row:not(.compare-header):hover > div { background: rgba(255,255,255,0.02); }
+    .compare-grid {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .compare-grid .compare-row:last-child > div { border-bottom: none; }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    /* ── Scroll-reveal utility ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════  HEADER  ═══════════════════════════ -->
+<header class="site-header">
+  <div class="header-label">Technical Feasibility Guide</div>
+  <h1>TAWOS Story Point Estimation<br>via Federated Learning</h1>
+  <p class="subtitle">Framework adaptation analysis &amp; implementation roadmap</p>
+  <div class="verdict-badge">
+    <span class="dot"></span>
+    Verdict: FEASIBLE — Moderate Adaptation Required
+  </div>
+</header>
+
+<!-- ═══════════════════════════  NAV  ═══════════════════════════ -->
+<nav class="toc-nav">
+  <ul>
+    <li><a href="#s1">Data Extraction</a></li>
+    <li><a href="#s2">Task Type</a></li>
+    <li><a href="#s3">Model Architecture</a></li>
+    <li><a href="#s4">Data Distribution</a></li>
+    <li><a href="#s5">Timeline</a></li>
+    <li><a href="#s6">Changes Required</a></li>
+    <li><a href="#s7">Implementation Plan</a></li>
+    <li><a href="#s8">Expected Results</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════  MAIN  ═══════════════════════════ -->
+<main>
+<div class="container">
+
+  <!-- ── 1. Data Extraction ── -->
+  <section class="section" id="s1">
+    <div class="section-number">Section 01</div>
+    <h2>Data Extraction &amp; Features</h2>
+
+    <div class="options-grid">
+      <div class="option-card recommended">
+        <h3>Option A</h3>
+        <h4>Tabular Features</h4>
+        <p>Extract structured numerical and categorical features directly from TAWOS database issues via SQL queries.</p>
+        <ul class="feature-list">
+          <li><strong>Example features:</strong> description length, comment count, link count, assignee changes, resolution time, sprint duration</li>
+          <li><strong>Format:</strong> CSV — features (columns) x issues (rows)</li>
+          <li><strong>Effort:</strong> Low — SQL queries to CSV</li>
+        </ul>
+        <ul class="pro-con" style="margin-top:0.75rem">
+          <li class="pro">Lightweight and easy to distribute</li>
+          <li class="pro">Reproducible across workers</li>
+          <li class="pro">Ideal for federated environments</li>
+        </ul>
+      </div>
+
+      <div class="option-card">
+        <h3>Option B</h3>
+        <h4>Text Embeddings</h4>
+        <p>Convert issue descriptions into high-dimensional numerical vectors using BERT or Sentence Transformers.</p>
+        <ul class="feature-list">
+          <li><strong>Output:</strong> 768-dimensional vector per issue</li>
+          <li><strong>Format:</strong> Large numpy arrays</li>
+          <li><strong>Effort:</strong> Medium — requires embedding model</li>
+        </ul>
+        <ul class="pro-con" style="margin-top:0.75rem">
+          <li class="con">Overkill for MVP</li>
+          <li class="con">Storage intensive</li>
+          <li class="con">Harder to distribute across workers</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rec-bar">Recommendation: Option A (Tabular Features) — simplest and most effective starting point</div>
+  </section>
+
+  <!-- ── 2. Task Type ── -->
+  <section class="section" id="s2">
+    <div class="section-number">Section 02</div>
+    <h2>Task Type</h2>
+
+    <div class="options-grid">
+      <div class="option-card recommended">
+        <h3>Option A</h3>
+        <h4>Regression</h4>
+        <p>Predict exact story point values as continuous numbers. TAWOS provides actual SP values, making this a natural fit.</p>
+        <ul class="feature-list">
+          <li><strong>Model output:</strong> Continuous number → round to nearest SP</li>
+          <li><strong>Loss function:</strong> MSE (Mean Squared Error)</li>
+          <li><strong>Evaluation:</strong> RMSE, MAE</li>
+        </ul>
+        <ul class="pro-con" style="margin-top:0.75rem">
+          <li class="pro">Most common in industry</li>
+          <li class="pro">Matches agile estimation reality</li>
+          <li class="pro">Preserves full numeric precision</li>
+        </ul>
+      </div>
+
+      <div class="option-card">
+        <h3>Option B</h3>
+        <h4>Classification</h4>
+        <p>Categorize issues into SP buckets such as Small, Medium, or Large classes.</p>
+        <ul class="feature-list">
+          <li><strong>Model output:</strong> Probability per category</li>
+          <li><strong>Loss function:</strong> Cross-Entropy</li>
+          <li><strong>Evaluation:</strong> Accuracy, F1-Score</li>
+        </ul>
+        <ul class="pro-con" style="margin-top:0.75rem">
+          <li class="con">Loses granularity</li>
+          <li class="con">Treats SP as discrete categories vs. continuous scale</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rec-bar">Recommendation: Regression — preserves precision and aligns with agile practice</div>
+  </section>
+
+  <!-- ── 3. Model Architecture ── -->
+  <section class="section" id="s3">
+    <div class="section-number">Section 03</div>
+    <h2>Model Architecture</h2>
+
+    <p style="margin-bottom:1.5rem; font-size:0.95rem;">For federated learning on tabular data, a <strong style="color:var(--heading)">Multi-Layer Perceptron (MLP)</strong> is the optimal choice. It integrates cleanly with FedAvg and requires no change to the existing aggregation infrastructure.</p>
+
+    <div class="mlp-diagram">
+      <div class="mlp-layers">
+        <div class="mlp-layer">
+          <div class="mlp-box input">20 Input Features</div>
+          <div class="mlp-label">Input Layer</div>
+        </div>
+        <div class="mlp-arrow">&#8594;</div>
+        <div class="mlp-layer">
+          <div class="mlp-box hidden1">128 neurons · ReLU</div>
+          <div class="mlp-label">Hidden Layer 1</div>
+        </div>
+        <div class="mlp-arrow">&#8594;</div>
+        <div class="mlp-layer">
+          <div class="mlp-box hidden2">64 neurons · ReLU</div>
+          <div class="mlp-label">Hidden Layer 2</div>
+        </div>
+        <div class="mlp-arrow">&#8594;</div>
+        <div class="mlp-layer">
+          <div class="mlp-box output">1 neuron · Linear</div>
+          <div class="mlp-label">Output (SP Prediction)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="options-grid" style="margin-top:1.5rem">
+      <div class="option-card recommended">
+        <h3>Why MLP</h3>
+        <ul class="pro-con">
+          <li class="pro">Works well for tabular data</li>
+          <li class="pro">Easy parameter aggregation with FedAvg</li>
+          <li class="pro">Drop-in replacement for CNN</li>
+          <li class="pro">Fast training, small footprint (~20k params)</li>
+        </ul>
+      </div>
+      <div class="option-card">
+        <h3>Why Not Others</h3>
+        <ul class="pro-con">
+          <li class="con"><strong>BERT (Transformers)</strong> — You have numerical features, not raw text. BERT's entire purpose is to convert text descriptions into vectors. Adding BERT means: extra preprocessing, loading 100M+ parameters per worker, slower training, and bloated model aggregation. It solves a problem you don't have.</li>
+          <li class="con"><strong>XGBoost</strong> — Tree-based models are hard to federate. Parameters aren't continuous and don't aggregate well with FedAvg. You'd need custom aggregation logic and lose the benefits of your existing framework.</li>
+          <li class="con"><strong>Linear Models</strong> — Too simple for the relationships in your 20 features. Won't capture non-linear patterns, leading to poor RMSE and underperformance compared to MLP.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rec-bar">Recommendation: Custom PyTorch MLP — retain existing FedAvg infrastructure unchanged</div>
+  </section>
+
+  <!-- ── 4. Data Distribution ── -->
+  <section class="section" id="s4">
+    <div class="section-number">Section 04</div>
+    <h2>Data Distribution Strategy</h2>
+
+    <div class="options-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="option-card recommended">
+        <h3>Option A</h3>
+        <h4>By Project</h4>
+        <p>Each worker receives all issues from a specific project. 39 available projects — use 10–15 major ones.</p>
+        <ul class="pro-con">
+          <li class="pro">Non-IID (realistic)</li>
+          <li class="pro">Simulates real team collaboration</li>
+          <li class="pro">Demonstrates FL heterogeneity</li>
+        </ul>
+      </div>
+      <div class="option-card">
+        <h3>Option B</h3>
+        <h4>Random IID</h4>
+        <p>Shuffle all 450K issues and divide equally across workers.</p>
+        <ul class="pro-con">
+          <li class="pro">Simpler setup</li>
+          <li class="con">Unrealistic for real teams</li>
+          <li class="con">Misses heterogeneous data challenges</li>
+        </ul>
+      </div>
+      <div class="option-card">
+        <h3>Option C</h3>
+        <h4>By Issue Type</h4>
+        <p>Partition by Bug vs. Feature across workers.</p>
+        <ul class="pro-con">
+          <li class="pro">Logically motivated</li>
+          <li class="con">Less natural than project boundary</li>
+          <li class="con">Fewer distinct partitions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="arch-block" style="margin-top:1.5rem">
+      <div class="arch-header">Example — By-Project Distribution</div>
+      <pre><span class="ok">Worker 1</span>  →  Apache Mesos       (~5,000 issues)
+<span class="ok">Worker 2</span>  →  Apache MXNet        (~6,000 issues)
+<span class="ok">Worker 3</span>  →  Atlassian Confluence (~7,200 issues)
+<span class="ok">Worker 4</span>  →  Spring Framework    (~4,800 issues)
+...
+<span class="ok">Worker N</span>  →  Last major project</pre>
+    </div>
+
+    <div class="rec-bar">Recommendation: Option A (By Project) — most realistic simulation for FL research</div>
+  </section>
+
+  <!-- ── 5. Timeline ── -->
+  <section class="section" id="s5">
+    <div class="section-number">Section 05</div>
+    <h2>Timeline &amp; Feasibility</h2>
+
+    <p style="margin-bottom:1.75rem; font-size:0.95rem;">Estimated effort for a working proof-of-concept: <strong style="color:var(--accent)">3–5 days</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Effort</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Download TAWOS and extract features</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td>1 day</td>
+          </tr>
+          <tr>
+            <td>Create feature loader module</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td>1 day</td>
+          </tr>
+          <tr>
+            <td>Build MLP model</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td>1 day</td>
+          </tr>
+          <tr>
+            <td>Integrate with FL framework</td>
+            <td><span class="badge badge-med">Medium</span></td>
+            <td>1–2 days</td>
+          </tr>
+          <tr>
+            <td>Run test experiment and validate</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td>1 day</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 6. Changes Required ── -->
+  <section class="section" id="s6">
+    <div class="section-number">Section 06</div>
+    <h2>Changes to Current Framework</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Current State</th>
+            <th>Required State</th>
+            <th>Effort</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Data Loader</td>
+            <td>Image loading (CIFAR / Fashion)</td>
+            <td>Tabular CSV loading</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td>Model</td>
+            <td>Convolutional Neural Network</td>
+            <td>Multi-Layer Perceptron</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td>Loss Function</td>
+            <td>Cross-Entropy</td>
+            <td>MSE (Regression)</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td>Data Distribution</td>
+            <td>IID random batches</td>
+            <td>By-project partition</td>
+            <td><span class="badge badge-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Server, Client, FedAvg, API</td>
+            <td colspan="2">No changes required — fully reusable</td>
+            <td><span class="badge badge-reuse">Reuse</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Complexity comparison -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--heading); margin:2rem 0 1rem;">Complexity Comparison</h3>
+    <div class="compare-grid">
+      <div class="compare-row compare-header">
+        <div>Aspect</div>
+        <div>Current (CNN / CIFAR)</div>
+        <div>New (MLP / TAWOS)</div>
+        <div>Assessment</div>
+      </div>
+      <div class="compare-row reveal">
+        <div style="color:var(--heading)">Data Shape</div>
+        <div>Images 28×28</div>
+        <div>Tabular 20 features</div>
+        <div><span class="badge badge-low">Easier</span></div>
+      </div>
+      <div class="compare-row reveal">
+        <div style="color:var(--heading)">Output</div>
+        <div>10 classes</div>
+        <div>1 continuous value</div>
+        <div><span class="badge badge-low">Simpler</span></div>
+      </div>
+      <div class="compare-row reveal">
+        <div style="color:var(--heading)">Model Size</div>
+        <div>~500k parameters</div>
+        <div>~20k parameters</div>
+        <div><span class="badge badge-low">Lighter</span></div>
+      </div>
+      <div class="compare-row reveal">
+        <div style="color:var(--heading)">Loss Function</div>
+        <div>Cross-Entropy</div>
+        <div>MSE</div>
+        <div><span class="badge badge-low">Simpler</span></div>
+      </div>
+      <div class="compare-row reveal">
+        <div style="color:var(--heading)">Data Distribution</div>
+        <div>IID batches</div>
+        <div>Project-based non-IID</div>
+        <div><span class="badge badge-med">New Pattern</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. Implementation Plan ── -->
+  <section class="section" id="s7">
+    <div class="section-number">Section 07</div>
+    <h2>Implementation Plan</h2>
+
+    <!-- Data pipeline -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--heading); margin-bottom:1rem;">Data Pipeline Overview</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <span class="ps-num">01</span>
+        <span class="ps-icon">&#128451;</span>
+        <span class="ps-text"><strong>TAWOS MySQL Database</strong> — source of all issue data</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step">
+        <span class="ps-num">02</span>
+        <span class="ps-icon">&#128202;</span>
+        <span class="ps-text"><strong>Feature Extraction</strong> — SQL queries yield ~20 tabular features per issue</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step">
+        <span class="ps-num">03</span>
+        <span class="ps-icon">&#128196;</span>
+        <span class="ps-text"><strong>CSV Dataset</strong> — 450K rows x 20 columns</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step">
+        <span class="ps-num">04</span>
+        <span class="ps-icon">&#9881;</span>
+        <span class="ps-text"><strong>Project Partitioning</strong> — distribute across 10–15 workers by project</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step">
+        <span class="ps-num">05</span>
+        <span class="ps-icon">&#128200;</span>
+        <span class="ps-text"><strong>Local MLP Training</strong> — each worker trains on their project subset</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step">
+        <span class="ps-num">06</span>
+        <span class="ps-icon">&#128279;</span>
+        <span class="ps-text"><strong>FedAvg Aggregation</strong> — server averages model parameters across workers</span>
+        <span class="ps-arrow">&#8595;</span>
+      </div>
+      <div class="pipeline-step" style="border-bottom:none">
+        <span class="ps-num">07</span>
+        <span class="ps-icon">&#10003;</span>
+        <span class="ps-text"><strong>Global Model</strong> — predicts story points for any new issue</span>
+      </div>
+    </div>
+
+    <!-- Phase timeline -->
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--heading); margin:2rem 0 1.25rem;">Phase-by-Phase Breakdown</h3>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <h4>Phase 1 — Data Preparation (Day 1)</h4>
+        <ul>
+          <li>Download TAWOS database SQL file</li>
+          <li>Create <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">tawos_feature_extractor.py</code></li>
+          <li>Run extraction → <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">data/tawos_features.csv</code></li>
+          <li>Verify: 450K rows, no missing values</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <h4>Phase 2 — Data Loaders (Day 1–2)</h4>
+        <ul>
+          <li>Create <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">tawos_data_loader.py</code></li>
+          <li>Partition CSV by 15 major projects</li>
+          <li>Build and pickle DataLoaders per worker</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <h4>Phase 3 — Model (Day 2)</h4>
+        <ul>
+          <li>Create <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">TAWOSMLP</code> in <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">federated_learning/nets/</code></li>
+          <li>Verify shape: (batch=32, features=20) → (batch=32, output=1)</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <h4>Phase 4 — Framework Integration (Day 2–3)</h4>
+        <ul>
+          <li>Update <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">arguments.py</code> with TAWOS dataset option</li>
+          <li>Adjust <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">client.py</code> evaluation → RMSE / MAE</li>
+          <li>Update API server with TAWOS endpoints</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <h4>Phase 5 — Testing (Day 3–4)</h4>
+        <ul>
+          <li>Run via CLI with TAWOS config</li>
+          <li>Run via API: POST /run-experiment with dataset=tawos</li>
+          <li>Verify results in <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent2);font-size:0.82em">results/</code> folder</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <h4>Phase 6 — Validation (Day 4–5)</h4>
+        <ul>
+          <li>Train global model for 50 rounds</li>
+          <li>Confirm RMSE decreases consistently</li>
+          <li>Compare federated vs. single global baseline</li>
+          <li>Verify non-IID effect visible across workers</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 8. Expected Results ── -->
+  <section class="section" id="s8">
+    <div class="section-number">Section 08</div>
+    <h2>Expected Results &amp; Success Criteria</h2>
+
+    <div class="options-grid">
+      <div class="option-card">
+        <h3>Output Metrics</h3>
+        <ul class="feature-list">
+          <li><strong>Per round:</strong> Global RMSE, Global MAE, Test Loss</li>
+          <li><strong>Per worker:</strong> Local RMSE, Training Loss</li>
+          <li><strong>Participation log:</strong> Active workers per round</li>
+          <li><strong>Format:</strong> CSV saved to results/ folder</li>
+        </ul>
+      </div>
+      <div class="option-card recommended">
+        <h3>Success Criteria</h3>
+        <ul class="pro-con">
+          <li class="pro">RMSE improves over 50 rounds (e.g. 5.0 → 3.2)</li>
+          <li class="pro">Federated RMSE outperforms single global baseline</li>
+          <li class="pro">Worker convergence visible in logs</li>
+          <li class="pro">Non-IID effect detectable across worker optima</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Final verdict -->
+    <div class="final-verdict reveal">
+      <h3>Final Verdict</h3>
+      <p style="font-size:0.95rem; color:var(--text); margin-bottom:0.5rem;">The existing federated learning framework is sufficiently flexible. The core algorithmic components require no changes — only the data pipeline and model architecture need replacing.</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--accent); margin-top:0.75rem;">In essence: swapping "What class is this image?" for "What story points for this issue?" — the FL machinery stays intact.</p>
+      <div class="verdict-grid">
+        <div class="verdict-item"><span class="vi-icon">+</span><span class="vi-text">Server, Client, FedAvg, API, and Web UI are fully reusable</span></div>
+        <div class="verdict-item"><span class="vi-icon">+</span><span class="vi-text">No algorithmic changes to aggregation logic</span></div>
+        <div class="verdict-item"><span class="vi-icon">+</span><span class="vi-text">Main work scoped to data loading and model swap</span></div>
+        <div class="verdict-item"><span class="vi-icon">+</span><span class="vi-text">Working proof-of-concept in 3–5 days</span></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+</main>
+
+<footer>
+  TAWOS Federated Learning Feasibility Guide &nbsp;&mdash;&nbsp; Technical Reference Document
+</footer>
+
+<script>
+  // Scroll-reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section, .reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
